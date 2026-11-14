@@ -102,4 +102,3 @@ export function openapi(baseURL) {
   document.paths['/v1/returns/{id}/submit'].post.requestBody.content['application/json'].schema.properties.acknowledgements={type:'array',items:{type:'string'}};
   return document;
 }
-

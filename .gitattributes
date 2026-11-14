@@ -1,0 +1,3 @@
+*.dll binary
+*.json.gz binary
+third_party/genutax/EULA.rtf -text -diff

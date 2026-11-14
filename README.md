@@ -131,9 +131,9 @@ npm install --no-save jsdom
 JSDOM_PATH="$PWD/node_modules/jsdom" node scripts/test-ui-person-notes.mjs
 ```
 
-Other renderer checks are in `scripts/test-ui*.mjs`. The 0.8.10 full backend run
-passed 172 tests; later person-notes changes passed focused persistence, profile,
-concurrency and renderer regressions. Test fixtures use synthetic identities.
+Other renderer checks are in `scripts/test-ui*.mjs`. The 0.9.0 public-release backend run
+passed 174 tests. Person-notes, profile, concurrency and renderer regressions
+also passed; a clean checkout built and started with an empty offline workspace. Test fixtures use synthetic identities.
 These results do not establish universal tax parity or live CRA acceptance.
 
 Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md). Changes to

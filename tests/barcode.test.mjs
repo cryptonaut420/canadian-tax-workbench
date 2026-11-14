@@ -1,0 +1,36 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {NativeBarcode} from '../server/barcode.mjs';
+import {spawnSync} from 'node:child_process';
+import {mkdtempSync,rmSync,readFileSync} from 'node:fs';
+import {tmpdir} from 'node:os';
+import {join,resolve} from 'node:path';
+const SOURCE='dba352f2ea4c91a6afb267903f2eb0b71379155fcfc4fdf3871027ebd6c7ce9e';
+test('original PDF417 CIL encodes deterministic ASCII, Latin1 and exact macro segments without Wine/GDI',async t=>{
+ const dir=mkdtempSync(join(tmpdir(),'original-barcode-'));t.after(()=>rmSync(dir,{recursive:true,force:true}));const engine=new NativeBarcode(resolve('.'),dir);await engine.initialize();
+ const ascii=await engine.encode({text:'Synthetic barcode test',columns:14,rows:50});assert.equal(ascii.sourceSha256,SOURCE);assert.ok(ascii.bars.length>100);assert.equal(ascii.segment,-1);
+ assert.deepEqual((await engine.encode({text:'Synthetic barcode test',columns:14,rows:50})).bars,ascii.bars);
+ const accent=await engine.encode({text:'André éà£ÿ',columns:14,rows:50});assert.ok(accent.bars.length>100);
+ const long='A'.repeat(1200),macro0=await engine.encode({text:long,columns:14,rows:50,macro:true,macroId:[1,1,3,0],segment:0}),macro1=await engine.encode({text:long,columns:14,rows:50,macro:true,macroId:[1,1,3,0],segment:1});
+ assert.equal(macro0.segments,2);assert.equal(macro1.segment,1);
+ const sfdHeader='H'.repeat(1200),sfd0=await engine.encode({text:sfdHeader,columns:14,rows:60,macro:true,macroId:[1,1,3,1],segment:0}),sfd1=await engine.encode({text:sfdHeader,columns:14,rows:60,macro:true,macroId:[1,1,3,1],segment:1});
+ assert.equal(sfd0.segments,2);
+ const source=readFileSync('native-barcode/Program.cs','utf8');assert.ok(source.includes('CodePagesEncodingProvider.Instance'),'ANSI1252 must be available to original VB Asc');
+ const available=spawnSync('python3',['-c','import PIL,zxingcpp'],{encoding:'utf8'}).status===0;
+ if(available){
+   const decoded=spawnSync('python3',['native-barcode/verify_decode.py'],{input:JSON.stringify({barcodes:[ascii,accent,macro0,macro1,sfd0,sfd1]}),encoding:'utf8',maxBuffer:2*1024*1024});assert.equal(decoded.status,0,decoded.stderr);
+   const result=JSON.parse(decoded.stdout).decoded;
+   assert.equal(Buffer.from(result[0].bytesHex,'hex').toString('latin1'),'Synthetic barcode test');
+   assert.equal(Buffer.from(result[1].bytesHex,'hex').toString('latin1'),'André éà£ÿ');
+   assert.equal(Buffer.from(result[2].bytesHex+result[3].bytesHex,'hex').toString('latin1'),long);
+   assert.equal(result[2].extra.FileId,'001001003000');assert.equal(result[3].extra.FileId,'001001003000');
+   assert.equal(Buffer.from(result[4].bytesHex+result[5].bytesHex,'hex').toString('latin1'),sfdHeader);
+   assert.equal(result[4].extra.FileId,'001001003001');assert.equal(result[5].extra.FileId,'001001003001');
+ }else t.diagnostic('Independent decoder requires optional Pillow + zxingcpp; native encoder assertions still ran.');
+ const rendered=await engine.render({barcodeData:long,dataType:'Ordinary',maxCodes:2,width:1500,height:390});assert.equal(rendered.segments.length,2);assert.match(rendered.markup,/data-native-pdf417="1"/);assert.equal(rendered.sourceEncoder,true);assert.equal(rendered.parityVerified,false);
+ assert.match((await engine.render({barcodeData:'',dataType:'Ordinary'})).warnings.join(' '),/did not provide/);
+ const sfdRendered=await engine.render({barcodeData:'ordinary\r'+sfdHeader+'\r',dataType:'SFD',maxCodes:2});assert.equal(sfdRendered.segments.length,2);
+ await assert.rejects(()=>engine.render({barcodeData:'ordinary\rheader\r'+sfdHeader,dataType:'SFD',maxCodes:2}),/maximum/);
+ await assert.rejects(()=>engine.render({barcodeData:'x',width:NaN}),/rectangle/);
+ await assert.rejects(()=>engine.render({barcodeData:long.repeat(3),maxCodes:1}),/maximum/);
+});

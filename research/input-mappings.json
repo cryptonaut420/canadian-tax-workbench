@@ -1,0 +1,2525 @@
+{
+  "description": "Exact selected original GenuTax interview definitions; no real taxpayer data. Original prompts are preserved as reverse engineering evidence, not interpreted as answers.",
+  "maritalStatus": {
+    "field": "MARST:00001:O",
+    "asOf": "December 31 of the tax year",
+    "options": [
+      {
+        "value": "MARR",
+        "label": "Married"
+      },
+      {
+        "value": "COLA",
+        "label": "Living common-law"
+      },
+      {
+        "value": "WIDO",
+        "label": "Widowed"
+      },
+      {
+        "value": "DIVO",
+        "label": "Divorced"
+      },
+      {
+        "value": "SEPA",
+        "label": "Separated"
+      },
+      {
+        "value": "SING",
+        "label": "Single"
+      }
+    ]
+  },
+  "maritalChanges": {
+    "answerField": "MARST:00002:R",
+    "options": [
+      "Yes",
+      "No"
+    ],
+    "covers": "previous tax year, current tax year and following tax year",
+    "historyStartingStatus": "MARST:00003:O",
+    "historyDatePattern": "MARST:00011:D:{loop}",
+    "historyStatusPattern": "MARST:00012:O:{loop}",
+    "caution": "A year-end status alone does not capture changes affecting benefit eligibility and spousal calculations. No is an explicit factual answer, never a universal default."
+  },
+  "spouse": {
+    "sin": "SPOUS:00001:S",
+    "firstName": "SPOUS:00011:T",
+    "lastName": "SPOUS:00013:T",
+    "birthDate": "SPOUS:00031:D",
+    "manualNetIncome": "SPOUS:00051:C",
+    "manualNetIncomeDefinition": "Line 23600 of spouse return, or what it would be if filed; separation/part-year rules in original prompt apply. Not gross income or total income.",
+    "claimSpouseAmount": "SPOCR:00001:R",
+    "selfEmployed": "SPOUS:00061:R",
+    "residentAtYearEnd": "SPOUS:00063:R",
+    "diedDuringYear": "SPOUS:00062:R",
+    "derivedNetIncome": "SPOUS:00101:C",
+    "derivedNote": "Computed by engine; do not supply as an input. Native2021 coupled probe matches spouse computed T1GEN:00236:C.",
+    "totalIncome": "No general manual spouse-total-income input in selected spouse interview section. For a coupled return, spouse total income is calculated from spouseFields and available as spouseFields T1GEN:00150:C."
+  },
+  "coupledReturns": {
+    "requestProperty": "spouseFields",
+    "requirements": "Complete year-specific spouse input map, including own TAXPY DOB, residency and MARST. Both returns must be appropriate to prepare together; original interview excludes different year-end province/territory/country.",
+    "extraPairingFlagRequired": false,
+    "observed": "Native calculator receives primary/spouse Hashtable arguments; PerformCalc calculates both and mirrors spouse DOB/net income. Manual spouseFields=null leaves manual SPOUS fields as inputs.",
+    "warning": "Do not treat an empty/partial spouseFields object as a known-zero-income spouse. Household linking, completeness and consent are separate application concerns."
+  },
+  "residency2023Onward": {
+    "field": "RESID:00301:R",
+    "options": [
+      {
+        "value": "1",
+        "label": "1 - Canadian Resident"
+      },
+      {
+        "value": "2",
+        "label": "2 - Factual Resident"
+      },
+      {
+        "value": "3",
+        "label": "3 - Non-Resident or Deemed Resident (other than residency status 6 or 7)"
+      },
+      {
+        "value": "4",
+        "label": "4 - Immigrant - entered Canada during 2023"
+      },
+      {
+        "value": "5",
+        "label": "5 - Emigrant - left Canada during 2023"
+      },
+      {
+        "value": "6",
+        "label": "6 - Deemed resident reporting only income from a business with\r\n     a permanent establishment in a province or territory of Canada"
+      },
+      {
+        "value": "7",
+        "label": "7 - Deemed resident reporting income from a business with\r\n     a permanent establishment outside Canada and/or\r\n     rental income from a property located outside Canada"
+      }
+    ],
+    "caution": "Other residency categories require the additional original follow-up inputs; a No/Yes toggle is not an adequate replacement."
+  },
+  "years": [
+    {
+      "year": 2019,
+      "evidenceId": "ev_841b04e97289c7fb79dbabf557a2e712338dfcb6fedfdec5723b938c4c61f5fa",
+      "resourceAssemblySha256": "90b378ee20c0c05d02155dace96f020e4380b36a4344b74cb393ef5c20b0b595",
+      "interviewXmlSha256": "1fab561130161816dc5e55b094ea627c9a001fb98e6826e0683390adb3dc8741",
+      "topics": [
+        {
+          "id": "MARSTA0001",
+          "title": "Marital Status",
+          "paragraphs": [
+            "What was your marital status as of December 31, [METAD:00001:I]?",
+            "The term married applies only if you are legally married to another person. See Help for the definition of common-law partner to see if it applies to you."
+          ],
+          "fields": [
+            {
+              "code": "MARST:00001:O",
+              "attributes": {
+                "ID": "MARST:00001:O",
+                "Column": "2",
+                "EntryRequired": "true"
+              },
+              "options": [
+                {
+                  "value": "MARR",
+                  "label": "Married"
+                },
+                {
+                  "value": "COLA",
+                  "label": "Living common law"
+                },
+                {
+                  "value": "WIDO",
+                  "label": "Widowed"
+                },
+                {
+                  "value": "DIVO",
+                  "label": "Divorced"
+                },
+                {
+                  "value": "SEPA",
+                  "label": "Separated"
+                },
+                {
+                  "value": "SING",
+                  "label": "Single"
+                }
+              ]
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "MARSTA0002",
+          "title": "Marital Status Changes",
+          "paragraphs": [
+            "Did your marital status change at any time during [METAD:90001:I], [METAD:00001:I], and/or [METAD:10001:I]?"
+          ],
+          "fields": [
+            {
+              "code": "MARST:00002:R",
+              "attributes": {
+                "ID": "MARST:00002:R",
+                "Column": "2",
+                "EntryRequired": "true"
+              },
+              "options": [
+                {
+                  "value": "Yes",
+                  "label": "Yes"
+                },
+                {
+                  "value": "No",
+                  "label": "No"
+                }
+              ]
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "MARSTA0003",
+          "title": "Marital Status History",
+          "paragraphs": [
+            "You can now begin entering the details of your marital status history.",
+            "What was your marital status as of December 31, [METAD:90002:I] ?"
+          ],
+          "fields": [
+            {
+              "code": "MARST:00003:O",
+              "attributes": {
+                "ID": "MARST:00003:O",
+                "Column": "2",
+                "EntryRequired": "true"
+              },
+              "options": [
+                {
+                  "value": "MARR",
+                  "label": "Married"
+                },
+                {
+                  "value": "COLA",
+                  "label": "Living common law"
+                },
+                {
+                  "value": "WIDO",
+                  "label": "Widowed"
+                },
+                {
+                  "value": "DIVO",
+                  "label": "Divorced"
+                },
+                {
+                  "value": "SEPA",
+                  "label": "Separated"
+                },
+                {
+                  "value": "SING",
+                  "label": "Single"
+                }
+              ]
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "MARSTA0007",
+          "title": "Marital Status Change Details",
+          "paragraphs": [
+            "Enter details of your change in marital status during [METAD:90001:I], [METAD:00001:I], and/or [METAD:10001:I]."
+          ],
+          "fields": [
+            {
+              "code": "MARST:00011:D",
+              "attributes": {
+                "ID": "MARST:00011:D",
+                "Column": "6",
+                "MinDate": "2018-01-01",
+                "MaxDate": "2020-12-31",
+                "EntryRequired": "true"
+              },
+              "options": []
+            },
+            {
+              "code": "MARST:00012:O",
+              "attributes": {
+                "ID": "MARST:00012:O",
+                "Column": "6",
+                "EntryRequired": "true",
+                "SecondaryID": "MARST:00014:T"
+              },
+              "options": [
+                {
+                  "value": "MARR",
+                  "label": "Married"
+                },
+                {
+                  "value": "COLA",
+                  "label": "Living common law"
+                },
+                {
+                  "value": "WIDO",
+                  "label": "Widowed"
+                },
+                {
+                  "value": "DIVO",
+                  "label": "Divorced"
+                },
+                {
+                  "value": "SEPA",
+                  "label": "Separated"
+                },
+                {
+                  "value": "SING",
+                  "label": "Single"
+                }
+              ]
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "MARSTA1001",
+          "title": "Preparing Returns Together",
+          "paragraphs": [
+            "You are able to prepare your tax return and your spouse's or common-law partner's tax return at the same time. Doing so will allow GenuTax Standard to optimize your tax returns so that you are both claiming the maximum amount of deductions and credits to which you are entitled.",
+            "Of course, this is not always possible. For instance, you may have separated due to a breakdown in your relationship since the end of [METAD:00001:I], and, therefore, may not have access to your spouse's or common-law partner's tax information.",
+            "Also note that you cannot prepare your returns at the same time if you and your spouse or common-law partner were not resident in the same province or territory (or country) as of December 31, [METAD:00001:I].",
+            "Click the button below to prepare your spouse's or common-law partner's return at the same time as preparing your own return."
+          ],
+          "fields": [],
+          "commands": [
+            {
+              "Command": "SpousalReturn"
+            }
+          ]
+        },
+        {
+          "id": "SPOUSE0001",
+          "title": "Spouse or Common-law Partner",
+          "paragraphs": [
+            "Enter the following details regarding your spouse or common-law partner."
+          ],
+          "fields": [
+            {
+              "code": "SPOUS:00001:S",
+              "attributes": {
+                "ID": "SPOUS:00001:S",
+                "Column": "5"
+              },
+              "options": []
+            },
+            {
+              "code": "SPOUS:00011:T",
+              "attributes": {
+                "ID": "SPOUS:00011:T",
+                "Column": "5",
+                "Width": "6",
+                "MaxChars": "60"
+              },
+              "options": []
+            },
+            {
+              "code": "SPOUS:00013:T",
+              "attributes": {
+                "ID": "SPOUS:00013:T",
+                "Column": "5",
+                "Width": "6",
+                "MaxChars": "60"
+              },
+              "options": []
+            },
+            {
+              "code": "SPOUS:00031:D",
+              "attributes": {
+                "ID": "SPOUS:00031:D",
+                "Column": "5",
+                "MaxDate": "2019-12-31",
+                "EntryRequired": "true"
+              },
+              "options": []
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "SPOUSE0002",
+          "title": "Spouse's or Common-law Partner's Net Income",
+          "paragraphs": [
+            "Enter your spouse's or common-law partner's net income for [METAD:00001:I].",
+            "This is the amount on line 23600 of your spouse's or common-law partner's tax return, or the amount that it would be if he or she filed a tax return. This amount is used when calculating certain tax credits and benefits that you may be entitled to.",
+            "Note: If you separated during [METAD:00001:I] because of a breakdown in your relationship, and were not back together on December 31, [METAD:00001:I], enter only your spouse's or common-law partner's net income for the period before the separation."
+          ],
+          "fields": [
+            {
+              "code": "SPOUS:00051:C",
+              "attributes": {
+                "ID": "SPOUS:00051:C",
+                "Column": "2",
+                "MinValue": "0.00"
+              },
+              "options": []
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "SPOUSE0004",
+          "title": "Spouse or Common-law Partner Self-Employed?",
+          "paragraphs": [
+            "Was your spouse or common-law partner self-employed during [METAD:00001:I]?"
+          ],
+          "fields": [
+            {
+              "code": "SPOUS:00061:R",
+              "attributes": {
+                "ID": "SPOUS:00061:R",
+                "Column": "2",
+                "EntryRequired": "true"
+              },
+              "options": [
+                {
+                  "value": "Yes",
+                  "label": "Yes"
+                },
+                {
+                  "value": "No",
+                  "label": "No"
+                }
+              ]
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "SPOUSE0103",
+          "title": "Spouse or Common-law Partner a Resident of Canada?",
+          "paragraphs": [
+            "Was your spouse or common-law partner a resident of Canada at the end of [METAD:00001:I]?"
+          ],
+          "fields": [
+            {
+              "code": "SPOUS:00063:R",
+              "attributes": {
+                "ID": "SPOUS:00063:R",
+                "Column": "2",
+                "EntryRequired": "true"
+              },
+              "options": [
+                {
+                  "value": "Yes",
+                  "label": "Yes"
+                },
+                {
+                  "value": "No",
+                  "label": "No"
+                }
+              ]
+            }
+          ],
+          "commands": []
+        }
+      ]
+    },
+    {
+      "year": 2020,
+      "evidenceId": "ev_b1a4dd9c8bf8370f5c2323e9f0dea63d847460a488dd6864c5b997f1c5c2d18a",
+      "resourceAssemblySha256": "10ce3b8875b1ff4d210aa812e8c229ae3ba57896d7e3e1afdd4577f7fe0da493",
+      "interviewXmlSha256": "7715155e7c00376f09bb4a9c186c8d75024062b7e100c02ee9411ea3c6ecf738",
+      "topics": [
+        {
+          "id": "MARSTA0001",
+          "title": "Marital Status",
+          "paragraphs": [
+            "What was your marital status as of December 31, [METAD:00001:I]?",
+            "The term married applies only if you are legally married to another person. See Help for the definition of living common-law to see if it applies to you."
+          ],
+          "fields": [
+            {
+              "code": "MARST:00001:O",
+              "attributes": {
+                "ID": "MARST:00001:O",
+                "Column": "2",
+                "EntryRequired": "true"
+              },
+              "options": [
+                {
+                  "value": "MARR",
+                  "label": "Married"
+                },
+                {
+                  "value": "COLA",
+                  "label": "Living common-law"
+                },
+                {
+                  "value": "WIDO",
+                  "label": "Widowed"
+                },
+                {
+                  "value": "DIVO",
+                  "label": "Divorced"
+                },
+                {
+                  "value": "SEPA",
+                  "label": "Separated"
+                },
+                {
+                  "value": "SING",
+                  "label": "Single"
+                }
+              ]
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "MARSTA0002",
+          "title": "Marital Status Changes",
+          "paragraphs": [
+            "Did your marital status change at any time during [METAD:90001:I], [METAD:00001:I], and/or [METAD:10001:I]?"
+          ],
+          "fields": [
+            {
+              "code": "MARST:00002:R",
+              "attributes": {
+                "ID": "MARST:00002:R",
+                "Column": "2",
+                "EntryRequired": "true"
+              },
+              "options": [
+                {
+                  "value": "Yes",
+                  "label": "Yes"
+                },
+                {
+                  "value": "No",
+                  "label": "No"
+                }
+              ]
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "MARSTA0003",
+          "title": "Marital Status History",
+          "paragraphs": [
+            "You can now begin entering the details of your marital status history.",
+            "What was your marital status as of December 31, [METAD:90002:I] ?"
+          ],
+          "fields": [
+            {
+              "code": "MARST:00003:O",
+              "attributes": {
+                "ID": "MARST:00003:O",
+                "Column": "2",
+                "EntryRequired": "true"
+              },
+              "options": [
+                {
+                  "value": "MARR",
+                  "label": "Married"
+                },
+                {
+                  "value": "COLA",
+                  "label": "Living common-law"
+                },
+                {
+                  "value": "WIDO",
+                  "label": "Widowed"
+                },
+                {
+                  "value": "DIVO",
+                  "label": "Divorced"
+                },
+                {
+                  "value": "SEPA",
+                  "label": "Separated"
+                },
+                {
+                  "value": "SING",
+                  "label": "Single"
+                }
+              ]
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "MARSTA0007",
+          "title": "Marital Status Change Details",
+          "paragraphs": [
+            "Enter details of your change in marital status during [METAD:90001:I], [METAD:00001:I], and/or [METAD:10001:I]."
+          ],
+          "fields": [
+            {
+              "code": "MARST:00011:D",
+              "attributes": {
+                "ID": "MARST:00011:D",
+                "Column": "6",
+                "MinDate": "2019-01-01",
+                "MaxDate": "2021-12-31",
+                "EntryRequired": "true"
+              },
+              "options": []
+            },
+            {
+              "code": "MARST:00012:O",
+              "attributes": {
+                "ID": "MARST:00012:O",
+                "Column": "6",
+                "EntryRequired": "true",
+                "SecondaryID": "MARST:00014:T"
+              },
+              "options": [
+                {
+                  "value": "MARR",
+                  "label": "Married"
+                },
+                {
+                  "value": "COLA",
+                  "label": "Living common-law"
+                },
+                {
+                  "value": "WIDO",
+                  "label": "Widowed"
+                },
+                {
+                  "value": "DIVO",
+                  "label": "Divorced"
+                },
+                {
+                  "value": "SEPA",
+                  "label": "Separated"
+                },
+                {
+                  "value": "SING",
+                  "label": "Single"
+                }
+              ]
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "MARSTA1001",
+          "title": "Preparing Returns Together",
+          "paragraphs": [
+            "You are able to prepare your tax return and your spouse's or common-law partner's tax return at the same time. Doing so will allow GenuTax Standard to optimize your tax returns so that you are both claiming the maximum amount of deductions and credits to which you are entitled.",
+            "Of course, this is not always possible. For instance, you may have separated due to a breakdown in your relationship since the end of [METAD:00001:I], and, therefore, may not have access to your spouse's or common-law partner's tax information.",
+            "Also note that you cannot prepare your returns at the same time if you and your spouse or common-law partner were not resident in the same province or territory (or country) as of December 31, [METAD:00001:I].",
+            "Click the button below to prepare your spouse's or common-law partner's return at the same time as preparing your own return."
+          ],
+          "fields": [],
+          "commands": [
+            {
+              "Command": "SpousalReturn"
+            }
+          ]
+        },
+        {
+          "id": "SPOUSE0001",
+          "title": "Spouse or Common-law Partner",
+          "paragraphs": [
+            "Enter the following details regarding your spouse or common-law partner."
+          ],
+          "fields": [
+            {
+              "code": "SPOUS:00001:S",
+              "attributes": {
+                "ID": "SPOUS:00001:S",
+                "Column": "5"
+              },
+              "options": []
+            },
+            {
+              "code": "SPOUS:00011:T",
+              "attributes": {
+                "ID": "SPOUS:00011:T",
+                "Column": "5",
+                "Width": "6",
+                "MaxChars": "60"
+              },
+              "options": []
+            },
+            {
+              "code": "SPOUS:00013:T",
+              "attributes": {
+                "ID": "SPOUS:00013:T",
+                "Column": "5",
+                "Width": "6",
+                "MaxChars": "60"
+              },
+              "options": []
+            },
+            {
+              "code": "SPOUS:00031:D",
+              "attributes": {
+                "ID": "SPOUS:00031:D",
+                "Column": "5",
+                "MaxDate": "2020-12-31",
+                "EntryRequired": "true"
+              },
+              "options": []
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "SPOUSE0002",
+          "title": "Spouse's or Common-law Partner's Net Income",
+          "paragraphs": [
+            "Enter your spouse's or common-law partner's net income for [METAD:00001:I].",
+            "This is the amount on line 23600 of your spouse's or common-law partner's tax return, or the amount that it would be if he or she filed a tax return. This amount is used when calculating certain tax credits and benefits that you may be entitled to.",
+            "Note: If you separated during [METAD:00001:I] because of a breakdown in your relationship, and were not back together on December 31, [METAD:00001:I], enter only your spouse's or common-law partner's net income for the period before the separation."
+          ],
+          "fields": [
+            {
+              "code": "SPOUS:00051:C",
+              "attributes": {
+                "ID": "SPOUS:00051:C",
+                "Column": "2",
+                "MinValue": "0.00"
+              },
+              "options": []
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "SPOUSE0004",
+          "title": "Spouse or Common-law Partner Self-Employed?",
+          "paragraphs": [
+            "Was your spouse or common-law partner self-employed during [METAD:00001:I]?"
+          ],
+          "fields": [
+            {
+              "code": "SPOUS:00061:R",
+              "attributes": {
+                "ID": "SPOUS:00061:R",
+                "Column": "2",
+                "EntryRequired": "true"
+              },
+              "options": [
+                {
+                  "value": "Yes",
+                  "label": "Yes"
+                },
+                {
+                  "value": "No",
+                  "label": "No"
+                }
+              ]
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "SPOUSE0103",
+          "title": "Spouse or Common-law Partner a Resident of Canada?",
+          "paragraphs": [
+            "Was your spouse or common-law partner a resident of Canada at the end of [METAD:00001:I]?"
+          ],
+          "fields": [
+            {
+              "code": "SPOUS:00063:R",
+              "attributes": {
+                "ID": "SPOUS:00063:R",
+                "Column": "2",
+                "EntryRequired": "true"
+              },
+              "options": [
+                {
+                  "value": "Yes",
+                  "label": "Yes"
+                },
+                {
+                  "value": "No",
+                  "label": "No"
+                }
+              ]
+            }
+          ],
+          "commands": []
+        }
+      ]
+    },
+    {
+      "year": 2021,
+      "evidenceId": "ev_4e6d7ea40104409db47d32922f19a9d19655b6237778c790788d6678872e9eb1",
+      "resourceAssemblySha256": "e2ff4d56f5e7f7e1139f8afe8cfc164f3e3ece2664d07e963206699d7fd43e77",
+      "interviewXmlSha256": "283ba75db7ec9b3a40db33bd47d0df872ec0c4650f5747705f8ebe37d2cc5ddd",
+      "topics": [
+        {
+          "id": "MARSTA0001",
+          "title": "Marital Status",
+          "paragraphs": [
+            "What was your marital status as of December 31, [METAD:00001:I]?",
+            "The term married applies only if you are legally married to another person. See Help for the definition of living common-law to see if it applies to you."
+          ],
+          "fields": [
+            {
+              "code": "MARST:00001:O",
+              "attributes": {
+                "ID": "MARST:00001:O",
+                "Column": "2",
+                "EntryRequired": "true"
+              },
+              "options": [
+                {
+                  "value": "MARR",
+                  "label": "Married"
+                },
+                {
+                  "value": "COLA",
+                  "label": "Living common-law"
+                },
+                {
+                  "value": "WIDO",
+                  "label": "Widowed"
+                },
+                {
+                  "value": "DIVO",
+                  "label": "Divorced"
+                },
+                {
+                  "value": "SEPA",
+                  "label": "Separated"
+                },
+                {
+                  "value": "SING",
+                  "label": "Single"
+                }
+              ]
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "MARSTA0002",
+          "title": "Marital Status Changes",
+          "paragraphs": [
+            "Did your marital status change at any time during [METAD:90001:I], [METAD:00001:I], and/or [METAD:10001:I]?"
+          ],
+          "fields": [
+            {
+              "code": "MARST:00002:R",
+              "attributes": {
+                "ID": "MARST:00002:R",
+                "Column": "2",
+                "EntryRequired": "true"
+              },
+              "options": [
+                {
+                  "value": "Yes",
+                  "label": "Yes"
+                },
+                {
+                  "value": "No",
+                  "label": "No"
+                }
+              ]
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "MARSTA0003",
+          "title": "Marital Status History",
+          "paragraphs": [
+            "You can now begin entering the details of your marital status history.",
+            "What was your marital status as of December 31, [METAD:90002:I] ?"
+          ],
+          "fields": [
+            {
+              "code": "MARST:00003:O",
+              "attributes": {
+                "ID": "MARST:00003:O",
+                "Column": "2",
+                "EntryRequired": "true"
+              },
+              "options": [
+                {
+                  "value": "MARR",
+                  "label": "Married"
+                },
+                {
+                  "value": "COLA",
+                  "label": "Living common-law"
+                },
+                {
+                  "value": "WIDO",
+                  "label": "Widowed"
+                },
+                {
+                  "value": "DIVO",
+                  "label": "Divorced"
+                },
+                {
+                  "value": "SEPA",
+                  "label": "Separated"
+                },
+                {
+                  "value": "SING",
+                  "label": "Single"
+                }
+              ]
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "MARSTA0007",
+          "title": "Marital Status Change Details",
+          "paragraphs": [
+            "Enter details of your change in marital status during [METAD:90001:I], [METAD:00001:I], and/or [METAD:10001:I]."
+          ],
+          "fields": [
+            {
+              "code": "MARST:00011:D",
+              "attributes": {
+                "ID": "MARST:00011:D",
+                "Column": "6",
+                "MinDate": "2020-01-01",
+                "MaxDate": "2022-12-31",
+                "EntryRequired": "true"
+              },
+              "options": []
+            },
+            {
+              "code": "MARST:00012:O",
+              "attributes": {
+                "ID": "MARST:00012:O",
+                "Column": "6",
+                "EntryRequired": "true",
+                "SecondaryID": "MARST:00014:T"
+              },
+              "options": [
+                {
+                  "value": "MARR",
+                  "label": "Married"
+                },
+                {
+                  "value": "COLA",
+                  "label": "Living common-law"
+                },
+                {
+                  "value": "WIDO",
+                  "label": "Widowed"
+                },
+                {
+                  "value": "DIVO",
+                  "label": "Divorced"
+                },
+                {
+                  "value": "SEPA",
+                  "label": "Separated"
+                },
+                {
+                  "value": "SING",
+                  "label": "Single"
+                }
+              ]
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "MARSTA1001",
+          "title": "Preparing Returns Together",
+          "paragraphs": [
+            "You are able to prepare your tax return and your spouse's or common-law partner's tax return at the same time. Doing so will allow GenuTax Standard to optimize your tax returns so that you are both claiming the maximum amount of deductions and credits to which you are entitled.",
+            "Of course, this is not always possible. For instance, you may have separated due to a breakdown in your relationship since the end of [METAD:00001:I], and, therefore, may not have access to your spouse's or common-law partner's tax information.",
+            "Also note that you cannot prepare your returns at the same time if you and your spouse or common-law partner were not resident in the same province or territory (or country) as of December 31, [METAD:00001:I].",
+            "Click the button below to prepare your spouse's or common-law partner's return at the same time as preparing your own return."
+          ],
+          "fields": [],
+          "commands": [
+            {
+              "Command": "SpousalReturn"
+            }
+          ]
+        },
+        {
+          "id": "SPOUSE0001",
+          "title": "Spouse or Common-law Partner",
+          "paragraphs": [
+            "Enter the following details regarding your spouse or common-law partner."
+          ],
+          "fields": [
+            {
+              "code": "SPOUS:00001:S",
+              "attributes": {
+                "ID": "SPOUS:00001:S",
+                "Column": "5"
+              },
+              "options": []
+            },
+            {
+              "code": "SPOUS:00011:T",
+              "attributes": {
+                "ID": "SPOUS:00011:T",
+                "Column": "5",
+                "Width": "6",
+                "MaxChars": "60"
+              },
+              "options": []
+            },
+            {
+              "code": "SPOUS:00013:T",
+              "attributes": {
+                "ID": "SPOUS:00013:T",
+                "Column": "5",
+                "Width": "6",
+                "MaxChars": "60"
+              },
+              "options": []
+            },
+            {
+              "code": "SPOUS:00031:D",
+              "attributes": {
+                "ID": "SPOUS:00031:D",
+                "Column": "5",
+                "MaxDate": "2021-12-31",
+                "EntryRequired": "true"
+              },
+              "options": []
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "SPOUSE0002",
+          "title": "Spouse's or Common-law Partner's Net Income",
+          "paragraphs": [
+            "Enter your spouse's or common-law partner's net income for [METAD:00001:I].",
+            "This is the amount on line 23600 of your spouse's or common-law partner's tax return, or the amount that it would be if he or she filed a tax return. This amount is used when calculating certain tax credits and benefits that you may be entitled to.",
+            "Note: If you separated during [METAD:00001:I] because of a breakdown in your relationship, and were not back together on December 31, [METAD:00001:I], enter only your spouse's or common-law partner's net income for the period before the separation."
+          ],
+          "fields": [
+            {
+              "code": "SPOUS:00051:C",
+              "attributes": {
+                "ID": "SPOUS:00051:C",
+                "Column": "2",
+                "MinValue": "0.00"
+              },
+              "options": []
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "SPOUSE0004",
+          "title": "Spouse or Common-law Partner Self-Employed?",
+          "paragraphs": [
+            "Was your spouse or common-law partner self-employed during [METAD:00001:I]?"
+          ],
+          "fields": [
+            {
+              "code": "SPOUS:00061:R",
+              "attributes": {
+                "ID": "SPOUS:00061:R",
+                "Column": "2",
+                "EntryRequired": "true"
+              },
+              "options": [
+                {
+                  "value": "Yes",
+                  "label": "Yes"
+                },
+                {
+                  "value": "No",
+                  "label": "No"
+                }
+              ]
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "SPOUSE0103",
+          "title": "Spouse or Common-law Partner a Resident of Canada?",
+          "paragraphs": [
+            "Was your spouse or common-law partner a resident of Canada at the end of [METAD:00001:I]?"
+          ],
+          "fields": [
+            {
+              "code": "SPOUS:00063:R",
+              "attributes": {
+                "ID": "SPOUS:00063:R",
+                "Column": "2",
+                "EntryRequired": "true"
+              },
+              "options": [
+                {
+                  "value": "Yes",
+                  "label": "Yes"
+                },
+                {
+                  "value": "No",
+                  "label": "No"
+                }
+              ]
+            }
+          ],
+          "commands": []
+        }
+      ]
+    },
+    {
+      "year": 2022,
+      "evidenceId": "ev_e163a84e8ec29581aef5d4abb96a42cac40faa77183e1e755f28c9dfe723b743",
+      "resourceAssemblySha256": "0a6d9fa1c4763068497e63e3f81f8d3d172f2b8f14c0b04de1d402f6c7912fa9",
+      "interviewXmlSha256": "cb23d9d8d1751ff4d3331a27de5c44eca2162a90bb75d5a278b8bb0979657362",
+      "topics": [
+        {
+          "id": "MARSTA0001",
+          "title": "Marital Status",
+          "paragraphs": [
+            "What was your marital status as of December 31, [METAD:00001:I]?",
+            "The term married applies only if you are legally married to another person. See Help for the definition of living common-law to see if it applies to you."
+          ],
+          "fields": [
+            {
+              "code": "MARST:00001:O",
+              "attributes": {
+                "ID": "MARST:00001:O",
+                "Column": "2",
+                "EntryRequired": "true"
+              },
+              "options": [
+                {
+                  "value": "MARR",
+                  "label": "Married"
+                },
+                {
+                  "value": "COLA",
+                  "label": "Living common-law"
+                },
+                {
+                  "value": "WIDO",
+                  "label": "Widowed"
+                },
+                {
+                  "value": "DIVO",
+                  "label": "Divorced"
+                },
+                {
+                  "value": "SEPA",
+                  "label": "Separated"
+                },
+                {
+                  "value": "SING",
+                  "label": "Single"
+                }
+              ]
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "MARSTA0002",
+          "title": "Marital Status Changes",
+          "paragraphs": [
+            "Did your marital status change at any time during [METAD:90001:I], [METAD:00001:I], and/or [METAD:10001:I]?"
+          ],
+          "fields": [
+            {
+              "code": "MARST:00002:R",
+              "attributes": {
+                "ID": "MARST:00002:R",
+                "Column": "2",
+                "EntryRequired": "true"
+              },
+              "options": [
+                {
+                  "value": "Yes",
+                  "label": "Yes"
+                },
+                {
+                  "value": "No",
+                  "label": "No"
+                }
+              ]
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "MARSTA0003",
+          "title": "Marital Status History",
+          "paragraphs": [
+            "You can now begin entering the details of your marital status history.",
+            "What was your marital status as of December 31, [METAD:90002:I] ?"
+          ],
+          "fields": [
+            {
+              "code": "MARST:00003:O",
+              "attributes": {
+                "ID": "MARST:00003:O",
+                "Column": "2",
+                "EntryRequired": "true"
+              },
+              "options": [
+                {
+                  "value": "MARR",
+                  "label": "Married"
+                },
+                {
+                  "value": "COLA",
+                  "label": "Living common-law"
+                },
+                {
+                  "value": "WIDO",
+                  "label": "Widowed"
+                },
+                {
+                  "value": "DIVO",
+                  "label": "Divorced"
+                },
+                {
+                  "value": "SEPA",
+                  "label": "Separated"
+                },
+                {
+                  "value": "SING",
+                  "label": "Single"
+                }
+              ]
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "MARSTA0007",
+          "title": "Marital Status Change Details",
+          "paragraphs": [
+            "Enter details of your change in marital status during [METAD:90001:I], [METAD:00001:I], and/or [METAD:10001:I]."
+          ],
+          "fields": [
+            {
+              "code": "MARST:00011:D",
+              "attributes": {
+                "ID": "MARST:00011:D",
+                "Column": "6",
+                "MinDate": "2021-01-01",
+                "MaxDate": "2023-12-31",
+                "EntryRequired": "true"
+              },
+              "options": []
+            },
+            {
+              "code": "MARST:00012:O",
+              "attributes": {
+                "ID": "MARST:00012:O",
+                "Column": "6",
+                "EntryRequired": "true",
+                "SecondaryID": "MARST:00014:T"
+              },
+              "options": [
+                {
+                  "value": "MARR",
+                  "label": "Married"
+                },
+                {
+                  "value": "COLA",
+                  "label": "Living common-law"
+                },
+                {
+                  "value": "WIDO",
+                  "label": "Widowed"
+                },
+                {
+                  "value": "DIVO",
+                  "label": "Divorced"
+                },
+                {
+                  "value": "SEPA",
+                  "label": "Separated"
+                },
+                {
+                  "value": "SING",
+                  "label": "Single"
+                }
+              ]
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "MARSTA1001",
+          "title": "Preparing Returns Together",
+          "paragraphs": [
+            "You are able to prepare your tax return and your spouse's or common-law partner's tax return at the same time. Doing so will allow GenuTax Standard to optimize your tax returns so that you are both claiming the maximum amount of deductions and credits to which you are entitled.",
+            "Of course, this is not always possible. For instance, you may have separated due to a breakdown in your relationship since the end of [METAD:00001:I], and, therefore, may not have access to your spouse's or common-law partner's tax information.",
+            "Also note that you cannot prepare your returns at the same time if you and your spouse or common-law partner were not resident in the same province or territory (or country) as of December 31, [METAD:00001:I].",
+            "Click the button below to prepare your spouse's or common-law partner's return at the same time as preparing your own return."
+          ],
+          "fields": [],
+          "commands": [
+            {
+              "Command": "SpousalReturn"
+            }
+          ]
+        },
+        {
+          "id": "SPOUSE0001",
+          "title": "Spouse or Common-law Partner",
+          "paragraphs": [
+            "Enter the following details regarding your spouse or common-law partner."
+          ],
+          "fields": [
+            {
+              "code": "SPOUS:00001:S",
+              "attributes": {
+                "ID": "SPOUS:00001:S",
+                "Column": "5"
+              },
+              "options": []
+            },
+            {
+              "code": "SPOUS:00011:T",
+              "attributes": {
+                "ID": "SPOUS:00011:T",
+                "Column": "5",
+                "Width": "6",
+                "MaxChars": "60"
+              },
+              "options": []
+            },
+            {
+              "code": "SPOUS:00013:T",
+              "attributes": {
+                "ID": "SPOUS:00013:T",
+                "Column": "5",
+                "Width": "6",
+                "MaxChars": "60"
+              },
+              "options": []
+            },
+            {
+              "code": "SPOUS:00031:D",
+              "attributes": {
+                "ID": "SPOUS:00031:D",
+                "Column": "5",
+                "MaxDate": "2022-12-31",
+                "EntryRequired": "true"
+              },
+              "options": []
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "SPOUSE0002",
+          "title": "Spouse's or Common-law Partner's Net Income",
+          "paragraphs": [
+            "Enter your spouse's or common-law partner's net income for [METAD:00001:I].",
+            "This is the amount on line 23600 of your spouse's or common-law partner's tax return, or the amount that it would be if he or she filed a tax return. This amount is used when calculating certain tax credits and benefits that you may be entitled to.",
+            "Note: If you separated during [METAD:00001:I] because of a breakdown in your relationship, and were not back together on December 31, [METAD:00001:I], enter only your spouse's or common-law partner's net income for the period before the separation."
+          ],
+          "fields": [
+            {
+              "code": "SPOUS:00051:C",
+              "attributes": {
+                "ID": "SPOUS:00051:C",
+                "Column": "2",
+                "MinValue": "0.00"
+              },
+              "options": []
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "SPOUSE0004",
+          "title": "Spouse or Common-law Partner Self-Employed?",
+          "paragraphs": [
+            "Was your spouse or common-law partner self-employed during [METAD:00001:I]?"
+          ],
+          "fields": [
+            {
+              "code": "SPOUS:00061:R",
+              "attributes": {
+                "ID": "SPOUS:00061:R",
+                "Column": "2",
+                "EntryRequired": "true"
+              },
+              "options": [
+                {
+                  "value": "Yes",
+                  "label": "Yes"
+                },
+                {
+                  "value": "No",
+                  "label": "No"
+                }
+              ]
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "SPOUSE0103",
+          "title": "Spouse or Common-law Partner a Resident of Canada?",
+          "paragraphs": [
+            "Was your spouse or common-law partner a resident of Canada at the end of [METAD:00001:I]?"
+          ],
+          "fields": [
+            {
+              "code": "SPOUS:00063:R",
+              "attributes": {
+                "ID": "SPOUS:00063:R",
+                "Column": "2",
+                "EntryRequired": "true"
+              },
+              "options": [
+                {
+                  "value": "Yes",
+                  "label": "Yes"
+                },
+                {
+                  "value": "No",
+                  "label": "No"
+                }
+              ]
+            }
+          ],
+          "commands": []
+        }
+      ]
+    },
+    {
+      "year": 2023,
+      "evidenceId": "ev_dca6efb843873d24c12eb9260658b1386e233ce0aad0cc28e224df7b256052a0",
+      "resourceAssemblySha256": "09ef4bb7727dd6c8e1b3a66ffb9b1106d9922d092e0bb5addcef6dd56443493b",
+      "interviewXmlSha256": "b67c49a1a5a35821c0145ff9eb68c60e559cb59088631e7541bd8cf95a3f5359",
+      "topics": [
+        {
+          "id": "MARSTA0001",
+          "title": "Marital Status",
+          "paragraphs": [
+            "What was your marital status as of December 31, [METAD:00001:I]?",
+            "The term married applies only if you are legally married to another person. See Help for the definition of living common-law to see if it applies to you."
+          ],
+          "fields": [
+            {
+              "code": "MARST:00001:O",
+              "attributes": {
+                "ID": "MARST:00001:O",
+                "Column": "2",
+                "EntryRequired": "true"
+              },
+              "options": [
+                {
+                  "value": "MARR",
+                  "label": "Married"
+                },
+                {
+                  "value": "COLA",
+                  "label": "Living common-law"
+                },
+                {
+                  "value": "WIDO",
+                  "label": "Widowed"
+                },
+                {
+                  "value": "DIVO",
+                  "label": "Divorced"
+                },
+                {
+                  "value": "SEPA",
+                  "label": "Separated"
+                },
+                {
+                  "value": "SING",
+                  "label": "Single"
+                }
+              ]
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "MARSTA0002",
+          "title": "Marital Status Changes",
+          "paragraphs": [
+            "Did your marital status change at any time during [METAD:90001:I], [METAD:00001:I], and/or [METAD:10001:I]?"
+          ],
+          "fields": [
+            {
+              "code": "MARST:00002:R",
+              "attributes": {
+                "ID": "MARST:00002:R",
+                "Column": "2",
+                "EntryRequired": "true"
+              },
+              "options": [
+                {
+                  "value": "Yes",
+                  "label": "Yes"
+                },
+                {
+                  "value": "No",
+                  "label": "No"
+                }
+              ]
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "MARSTA0003",
+          "title": "Marital Status History",
+          "paragraphs": [
+            "You can now begin entering the details of your marital status history.",
+            "What was your marital status as of December 31, [METAD:90002:I] ?"
+          ],
+          "fields": [
+            {
+              "code": "MARST:00003:O",
+              "attributes": {
+                "ID": "MARST:00003:O",
+                "Column": "2",
+                "EntryRequired": "true"
+              },
+              "options": [
+                {
+                  "value": "MARR",
+                  "label": "Married"
+                },
+                {
+                  "value": "COLA",
+                  "label": "Living common-law"
+                },
+                {
+                  "value": "WIDO",
+                  "label": "Widowed"
+                },
+                {
+                  "value": "DIVO",
+                  "label": "Divorced"
+                },
+                {
+                  "value": "SEPA",
+                  "label": "Separated"
+                },
+                {
+                  "value": "SING",
+                  "label": "Single"
+                }
+              ]
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "MARSTA0007",
+          "title": "Marital Status Change Details",
+          "paragraphs": [
+            "Enter details of your change in marital status during [METAD:90001:I], [METAD:00001:I], and/or [METAD:10001:I]."
+          ],
+          "fields": [
+            {
+              "code": "MARST:00011:D",
+              "attributes": {
+                "ID": "MARST:00011:D",
+                "Column": "6",
+                "MinDate": "2022-01-01",
+                "MaxDate": "2024-12-31",
+                "EntryRequired": "true"
+              },
+              "options": []
+            },
+            {
+              "code": "MARST:00012:O",
+              "attributes": {
+                "ID": "MARST:00012:O",
+                "Column": "6",
+                "EntryRequired": "true",
+                "SecondaryID": "MARST:00014:T"
+              },
+              "options": [
+                {
+                  "value": "MARR",
+                  "label": "Married"
+                },
+                {
+                  "value": "COLA",
+                  "label": "Living common-law"
+                },
+                {
+                  "value": "WIDO",
+                  "label": "Widowed"
+                },
+                {
+                  "value": "DIVO",
+                  "label": "Divorced"
+                },
+                {
+                  "value": "SEPA",
+                  "label": "Separated"
+                },
+                {
+                  "value": "SING",
+                  "label": "Single"
+                }
+              ]
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "MARSTA1001",
+          "title": "Preparing Returns Together",
+          "paragraphs": [
+            "You are able to prepare your tax return and your spouse's or common-law partner's tax return at the same time. Doing so will allow GenuTax Standard to optimize your tax returns so that you are both claiming the maximum amount of deductions and credits to which you are entitled.",
+            "Of course, this is not always possible. For instance, you may have separated due to a breakdown in your relationship since the end of [METAD:00001:I], and, therefore, may not have access to your spouse's or common-law partner's tax information.",
+            "Also note that you cannot prepare your returns at the same time if you and your spouse or common-law partner were not resident in the same province or territory (or country) as of December 31, [METAD:00001:I].",
+            "Click the button below to prepare your spouse's or common-law partner's return at the same time as preparing your own return."
+          ],
+          "fields": [],
+          "commands": [
+            {
+              "Command": "SpousalReturn"
+            }
+          ]
+        },
+        {
+          "id": "RESIDE0001",
+          "title": "Residency Status",
+          "paragraphs": [
+            "For your [METAD:00001:I] tax return, please indicate the residency status that best describes your situation."
+          ],
+          "fields": [
+            {
+              "code": "RESID:00301:R",
+              "attributes": {
+                "ID": "RESID:00301:R",
+                "Column": "1",
+                "EntryRequired": "true"
+              },
+              "options": [
+                {
+                  "value": "1",
+                  "label": "1 - Canadian Resident"
+                },
+                {
+                  "value": "2",
+                  "label": "2 - Factual Resident"
+                },
+                {
+                  "value": "3",
+                  "label": "3 - Non-Resident or Deemed Resident (other than residency status 6 or 7)"
+                },
+                {
+                  "value": "4",
+                  "label": "4 - Immigrant - entered Canada during 2023"
+                },
+                {
+                  "value": "5",
+                  "label": "5 - Emigrant - left Canada during 2023"
+                },
+                {
+                  "value": "6",
+                  "label": "6 - Deemed resident reporting only income from a business with\r\n     a permanent establishment in a province or territory of Canada"
+                },
+                {
+                  "value": "7",
+                  "label": "7 - Deemed resident reporting income from a business with\r\n     a permanent establishment outside Canada and/or\r\n     rental income from a property located outside Canada"
+                }
+              ]
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "SPOUSE0001",
+          "title": "Spouse or Common-law Partner",
+          "paragraphs": [
+            "Enter the following details regarding your spouse or common-law partner."
+          ],
+          "fields": [
+            {
+              "code": "SPOUS:00001:S",
+              "attributes": {
+                "ID": "SPOUS:00001:S",
+                "Column": "5"
+              },
+              "options": []
+            },
+            {
+              "code": "SPOUS:00011:T",
+              "attributes": {
+                "ID": "SPOUS:00011:T",
+                "Column": "5",
+                "Width": "6",
+                "MaxChars": "60"
+              },
+              "options": []
+            },
+            {
+              "code": "SPOUS:00013:T",
+              "attributes": {
+                "ID": "SPOUS:00013:T",
+                "Column": "5",
+                "Width": "6",
+                "MaxChars": "60"
+              },
+              "options": []
+            },
+            {
+              "code": "SPOUS:00031:D",
+              "attributes": {
+                "ID": "SPOUS:00031:D",
+                "Column": "5",
+                "MaxDate": "2023-12-31",
+                "EntryRequired": "true"
+              },
+              "options": []
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "SPOUSE0002",
+          "title": "Spouse's or Common-law Partner's Net Income",
+          "paragraphs": [
+            "Enter your spouse's or common-law partner's net income for [METAD:00001:I].",
+            "This is the amount on line 23600 of your spouse's or common-law partner's tax return, or the amount that it would be if he or she filed a tax return. This amount is used when calculating certain tax credits and benefits that you may be entitled to.",
+            "Note: If you separated during [METAD:00001:I] because of a breakdown in your relationship, and were not back together on December 31, [METAD:00001:I], enter only your spouse's or common-law partner's net income for the period before the separation."
+          ],
+          "fields": [
+            {
+              "code": "SPOUS:00051:C",
+              "attributes": {
+                "ID": "SPOUS:00051:C",
+                "Column": "2",
+                "MinValue": "0.00"
+              },
+              "options": []
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "SPOUSE0004",
+          "title": "Spouse or Common-law Partner Self-Employed?",
+          "paragraphs": [
+            "Was your spouse or common-law partner self-employed during [METAD:00001:I]?"
+          ],
+          "fields": [
+            {
+              "code": "SPOUS:00061:R",
+              "attributes": {
+                "ID": "SPOUS:00061:R",
+                "Column": "2",
+                "EntryRequired": "true"
+              },
+              "options": [
+                {
+                  "value": "Yes",
+                  "label": "Yes"
+                },
+                {
+                  "value": "No",
+                  "label": "No"
+                }
+              ]
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "SPOUSE0103",
+          "title": "Spouse or Common-law Partner a Resident of Canada?",
+          "paragraphs": [
+            "Was your spouse or common-law partner a resident of Canada at the end of [METAD:00001:I]?"
+          ],
+          "fields": [
+            {
+              "code": "SPOUS:00063:R",
+              "attributes": {
+                "ID": "SPOUS:00063:R",
+                "Column": "2",
+                "EntryRequired": "true"
+              },
+              "options": [
+                {
+                  "value": "Yes",
+                  "label": "Yes"
+                },
+                {
+                  "value": "No",
+                  "label": "No"
+                }
+              ]
+            }
+          ],
+          "commands": []
+        }
+      ]
+    },
+    {
+      "year": 2024,
+      "evidenceId": "ev_4be40301176767e78f9dc270a03af80251cb6706c5e72f70c04c1ed1d377c0ac",
+      "resourceAssemblySha256": "df2c9d6bdd2bf8c7dce9e239c730584f318071af00e585febf76c0afb975b3b9",
+      "interviewXmlSha256": "982f87823440fe70df62787d637ba896e4359bac78a80d473ea3ba905479711f",
+      "topics": [
+        {
+          "id": "MARSTA0001",
+          "title": "Marital Status",
+          "paragraphs": [
+            "What was your marital status as of December 31, [METAD:00001:I]?",
+            "The term married applies only if you are legally married to another person. See Help for the definition of living common-law to see if it applies to you."
+          ],
+          "fields": [
+            {
+              "code": "MARST:00001:O",
+              "attributes": {
+                "ID": "MARST:00001:O",
+                "Column": "2",
+                "EntryRequired": "true"
+              },
+              "options": [
+                {
+                  "value": "MARR",
+                  "label": "Married"
+                },
+                {
+                  "value": "COLA",
+                  "label": "Living common-law"
+                },
+                {
+                  "value": "WIDO",
+                  "label": "Widowed"
+                },
+                {
+                  "value": "DIVO",
+                  "label": "Divorced"
+                },
+                {
+                  "value": "SEPA",
+                  "label": "Separated"
+                },
+                {
+                  "value": "SING",
+                  "label": "Single"
+                }
+              ]
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "MARSTA0002",
+          "title": "Marital Status Changes",
+          "paragraphs": [
+            "Did your marital status change at any time during [METAD:90001:I], [METAD:00001:I], and/or [METAD:10001:I]?"
+          ],
+          "fields": [
+            {
+              "code": "MARST:00002:R",
+              "attributes": {
+                "ID": "MARST:00002:R",
+                "Column": "2",
+                "EntryRequired": "true"
+              },
+              "options": [
+                {
+                  "value": "Yes",
+                  "label": "Yes"
+                },
+                {
+                  "value": "No",
+                  "label": "No"
+                }
+              ]
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "MARSTA0003",
+          "title": "Marital Status History",
+          "paragraphs": [
+            "You can now begin entering the details of your marital status history.",
+            "What was your marital status as of December 31, [METAD:90002:I] ?"
+          ],
+          "fields": [
+            {
+              "code": "MARST:00003:O",
+              "attributes": {
+                "ID": "MARST:00003:O",
+                "Column": "2",
+                "EntryRequired": "true"
+              },
+              "options": [
+                {
+                  "value": "MARR",
+                  "label": "Married"
+                },
+                {
+                  "value": "COLA",
+                  "label": "Living common-law"
+                },
+                {
+                  "value": "WIDO",
+                  "label": "Widowed"
+                },
+                {
+                  "value": "DIVO",
+                  "label": "Divorced"
+                },
+                {
+                  "value": "SEPA",
+                  "label": "Separated"
+                },
+                {
+                  "value": "SING",
+                  "label": "Single"
+                }
+              ]
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "MARSTA0007",
+          "title": "Marital Status Change Details",
+          "paragraphs": [
+            "Enter details of your change in marital status during [METAD:90001:I], [METAD:00001:I], and/or [METAD:10001:I]."
+          ],
+          "fields": [
+            {
+              "code": "MARST:00011:D",
+              "attributes": {
+                "ID": "MARST:00011:D",
+                "Column": "6",
+                "MinDate": "2023-01-01",
+                "MaxDate": "2025-12-31",
+                "EntryRequired": "true"
+              },
+              "options": []
+            },
+            {
+              "code": "MARST:00012:O",
+              "attributes": {
+                "ID": "MARST:00012:O",
+                "Column": "6",
+                "EntryRequired": "true",
+                "SecondaryID": "MARST:00014:T"
+              },
+              "options": [
+                {
+                  "value": "MARR",
+                  "label": "Married"
+                },
+                {
+                  "value": "COLA",
+                  "label": "Living common-law"
+                },
+                {
+                  "value": "WIDO",
+                  "label": "Widowed"
+                },
+                {
+                  "value": "DIVO",
+                  "label": "Divorced"
+                },
+                {
+                  "value": "SEPA",
+                  "label": "Separated"
+                },
+                {
+                  "value": "SING",
+                  "label": "Single"
+                }
+              ]
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "MARSTA1001",
+          "title": "Preparing Returns Together",
+          "paragraphs": [
+            "You are able to prepare your tax return and your spouse's or common-law partner's tax return at the same time. Doing so will allow GenuTax Standard to optimize your tax returns so that you are both claiming the maximum amount of deductions and credits to which you are entitled.",
+            "Of course, this is not always possible. For instance, you may have separated due to a breakdown in your relationship since the end of [METAD:00001:I], and, therefore, may not have access to your spouse's or common-law partner's tax information.",
+            "Also note that you cannot prepare your returns at the same time if you and your spouse or common-law partner were not resident in the same province or territory (or country) as of December 31, [METAD:00001:I].",
+            "Click the button below to prepare your spouse's or common-law partner's return at the same time as preparing your own return."
+          ],
+          "fields": [],
+          "commands": [
+            {
+              "Command": "SpousalReturn"
+            }
+          ]
+        },
+        {
+          "id": "RESIDE0001",
+          "title": "Residency Status",
+          "paragraphs": [
+            "For your [METAD:00001:I] tax return, please indicate the residency status that best describes your situation."
+          ],
+          "fields": [
+            {
+              "code": "RESID:00301:R",
+              "attributes": {
+                "ID": "RESID:00301:R",
+                "Column": "1",
+                "EntryRequired": "true"
+              },
+              "options": [
+                {
+                  "value": "1",
+                  "label": "1 - Canadian Resident"
+                },
+                {
+                  "value": "2",
+                  "label": "2 - Factual Resident"
+                },
+                {
+                  "value": "3",
+                  "label": "3 - Non-Resident or Deemed Resident (other than residency status 6 or 7)"
+                },
+                {
+                  "value": "4",
+                  "label": "4 - Immigrant - entered Canada during 2024"
+                },
+                {
+                  "value": "5",
+                  "label": "5 - Emigrant - left Canada during 2024"
+                },
+                {
+                  "value": "6",
+                  "label": "6 - Deemed resident reporting only income from a business with\r\n     a permanent establishment in a province or territory of Canada"
+                },
+                {
+                  "value": "7",
+                  "label": "7 - Deemed resident reporting income from a business with\r\n     a permanent establishment outside Canada and/or\r\n     rental income from a property located outside Canada"
+                }
+              ]
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "SPOUSE0001",
+          "title": "Spouse or Common-law Partner",
+          "paragraphs": [
+            "Enter the following details regarding your spouse or common-law partner."
+          ],
+          "fields": [
+            {
+              "code": "SPOUS:00001:S",
+              "attributes": {
+                "ID": "SPOUS:00001:S",
+                "Column": "5"
+              },
+              "options": []
+            },
+            {
+              "code": "SPOUS:00011:T",
+              "attributes": {
+                "ID": "SPOUS:00011:T",
+                "Column": "5",
+                "Width": "6",
+                "MaxChars": "60"
+              },
+              "options": []
+            },
+            {
+              "code": "SPOUS:00013:T",
+              "attributes": {
+                "ID": "SPOUS:00013:T",
+                "Column": "5",
+                "Width": "6",
+                "MaxChars": "60"
+              },
+              "options": []
+            },
+            {
+              "code": "SPOUS:00031:D",
+              "attributes": {
+                "ID": "SPOUS:00031:D",
+                "Column": "5",
+                "MaxDate": "2024-12-31",
+                "EntryRequired": "true"
+              },
+              "options": []
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "SPOUSE0002",
+          "title": "Spouse's or Common-law Partner's Net Income",
+          "paragraphs": [
+            "Enter your spouse's or common-law partner's net income for [METAD:00001:I].",
+            "This is the amount on line 23600 of your spouse's or common-law partner's tax return, or the amount that it would be if he or she had filed a tax return. This amount is used when calculating certain tax credits and benefits that you may be entitled to.",
+            "If the net income from line 23600 of the return is negative before following the instruction on line 23600 that says \"if negative, enter 0\", enter the negative amount instead of entering \"0.00\".",
+            "Note: If you separated during [METAD:00001:I] because of a breakdown in your relationship, and were not back together on December 31, [METAD:00001:I], enter only your spouse's or common-law partner's net income for the period before the separation."
+          ],
+          "fields": [
+            {
+              "code": "SPOUS:00051:C",
+              "attributes": {
+                "ID": "SPOUS:00051:C",
+                "Column": "2"
+              },
+              "options": []
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "SPOUSE0004",
+          "title": "Spouse or Common-law Partner Self-Employed?",
+          "paragraphs": [
+            "Was your spouse or common-law partner self-employed during [METAD:00001:I]?"
+          ],
+          "fields": [
+            {
+              "code": "SPOUS:00061:R",
+              "attributes": {
+                "ID": "SPOUS:00061:R",
+                "Column": "2",
+                "EntryRequired": "true"
+              },
+              "options": [
+                {
+                  "value": "Yes",
+                  "label": "Yes"
+                },
+                {
+                  "value": "No",
+                  "label": "No"
+                }
+              ]
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "SPOUSE0103",
+          "title": "Spouse or Common-law Partner a Resident of Canada?",
+          "paragraphs": [
+            "Was your spouse or common-law partner a resident of Canada at the end of [METAD:00001:I]?"
+          ],
+          "fields": [
+            {
+              "code": "SPOUS:00063:R",
+              "attributes": {
+                "ID": "SPOUS:00063:R",
+                "Column": "2",
+                "EntryRequired": "true"
+              },
+              "options": [
+                {
+                  "value": "Yes",
+                  "label": "Yes"
+                },
+                {
+                  "value": "No",
+                  "label": "No"
+                }
+              ]
+            }
+          ],
+          "commands": []
+        }
+      ]
+    },
+    {
+      "year": 2025,
+      "evidenceId": "ev_99dce718a9a14e001b020ced9c5d6853b6dfab189246388172200dd6a14402e8",
+      "resourceAssemblySha256": "7466cb7d4db883954ba55ce7592e95e91c2fe322676ba1d94805f882fcdd68ee",
+      "interviewXmlSha256": "9c57bea9bae687bcd4e54c5fc559b4236d80e71c018c40b2d85d8b6b2381d99b",
+      "topics": [
+        {
+          "id": "MARSTA0001",
+          "title": "Marital Status",
+          "paragraphs": [
+            "What was your marital status as of December 31, [METAD:00001:I]?",
+            "The term married applies only if you are legally married to another person. See Help for the definition of living common-law to see if it applies to you."
+          ],
+          "fields": [
+            {
+              "code": "MARST:00001:O",
+              "attributes": {
+                "ID": "MARST:00001:O",
+                "Column": "2",
+                "EntryRequired": "true"
+              },
+              "options": [
+                {
+                  "value": "MARR",
+                  "label": "Married"
+                },
+                {
+                  "value": "COLA",
+                  "label": "Living common-law"
+                },
+                {
+                  "value": "WIDO",
+                  "label": "Widowed"
+                },
+                {
+                  "value": "DIVO",
+                  "label": "Divorced"
+                },
+                {
+                  "value": "SEPA",
+                  "label": "Separated"
+                },
+                {
+                  "value": "SING",
+                  "label": "Single"
+                }
+              ]
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "MARSTA0002",
+          "title": "Marital Status Changes",
+          "paragraphs": [
+            "Did your marital status change at any time during [METAD:90001:I], [METAD:00001:I], and/or [METAD:10001:I]?"
+          ],
+          "fields": [
+            {
+              "code": "MARST:00002:R",
+              "attributes": {
+                "ID": "MARST:00002:R",
+                "Column": "2",
+                "EntryRequired": "true"
+              },
+              "options": [
+                {
+                  "value": "Yes",
+                  "label": "Yes"
+                },
+                {
+                  "value": "No",
+                  "label": "No"
+                }
+              ]
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "MARSTA0003",
+          "title": "Marital Status History",
+          "paragraphs": [
+            "You can now begin entering the details of your marital status history.",
+            "What was your marital status as of December 31, [METAD:90002:I] ?"
+          ],
+          "fields": [
+            {
+              "code": "MARST:00003:O",
+              "attributes": {
+                "ID": "MARST:00003:O",
+                "Column": "2",
+                "EntryRequired": "true"
+              },
+              "options": [
+                {
+                  "value": "MARR",
+                  "label": "Married"
+                },
+                {
+                  "value": "COLA",
+                  "label": "Living common-law"
+                },
+                {
+                  "value": "WIDO",
+                  "label": "Widowed"
+                },
+                {
+                  "value": "DIVO",
+                  "label": "Divorced"
+                },
+                {
+                  "value": "SEPA",
+                  "label": "Separated"
+                },
+                {
+                  "value": "SING",
+                  "label": "Single"
+                }
+              ]
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "MARSTA0007",
+          "title": "Marital Status Change Details",
+          "paragraphs": [
+            "Enter details of your change in marital status during [METAD:90001:I], [METAD:00001:I], and/or [METAD:10001:I]."
+          ],
+          "fields": [
+            {
+              "code": "MARST:00011:D",
+              "attributes": {
+                "ID": "MARST:00011:D",
+                "Column": "6",
+                "MinDate": "2024-01-01",
+                "MaxDate": "2026-12-31",
+                "EntryRequired": "true"
+              },
+              "options": []
+            },
+            {
+              "code": "MARST:00012:O",
+              "attributes": {
+                "ID": "MARST:00012:O",
+                "Column": "6",
+                "EntryRequired": "true",
+                "SecondaryID": "MARST:00014:T"
+              },
+              "options": [
+                {
+                  "value": "MARR",
+                  "label": "Married"
+                },
+                {
+                  "value": "COLA",
+                  "label": "Living common-law"
+                },
+                {
+                  "value": "WIDO",
+                  "label": "Widowed"
+                },
+                {
+                  "value": "DIVO",
+                  "label": "Divorced"
+                },
+                {
+                  "value": "SEPA",
+                  "label": "Separated"
+                },
+                {
+                  "value": "SING",
+                  "label": "Single"
+                }
+              ]
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "MARSTA1001",
+          "title": "Preparing Returns Together",
+          "paragraphs": [
+            "You are able to prepare your tax return and your spouse's or common-law partner's tax return at the same time. Doing so will allow GenuTax Standard to optimize your tax returns so that you are both claiming the maximum amount of deductions and credits to which you are entitled.",
+            "Of course, this is not always possible. For instance, you may have separated due to a breakdown in your relationship since the end of [METAD:00001:I], and, therefore, may not have access to your spouse's or common-law partner's tax information.",
+            "Also note that you cannot prepare your returns at the same time if you and your spouse or common-law partner were not resident in the same province or territory (or country) as of December 31, [METAD:00001:I].",
+            "Click the button below to prepare your spouse's or common-law partner's return at the same time as preparing your own return."
+          ],
+          "fields": [],
+          "commands": [
+            {
+              "Command": "SpousalReturn"
+            }
+          ]
+        },
+        {
+          "id": "RESIDE0001",
+          "title": "Residency Status",
+          "paragraphs": [
+            "For your [METAD:00001:I] tax return, please indicate the residency status that best describes your situation."
+          ],
+          "fields": [
+            {
+              "code": "RESID:00301:R",
+              "attributes": {
+                "ID": "RESID:00301:R",
+                "Column": "1",
+                "EntryRequired": "true"
+              },
+              "options": [
+                {
+                  "value": "1",
+                  "label": "1 - Canadian Resident"
+                },
+                {
+                  "value": "2",
+                  "label": "2 - Factual Resident"
+                },
+                {
+                  "value": "3",
+                  "label": "3 - Non-Resident or Deemed Resident (other than residency status 6 or 7)"
+                },
+                {
+                  "value": "4",
+                  "label": "4 - Immigrant - entered Canada during 2025"
+                },
+                {
+                  "value": "5",
+                  "label": "5 - Emigrant - left Canada during 2025"
+                },
+                {
+                  "value": "6",
+                  "label": "6 - Deemed resident reporting only income from a business with\r\n     a permanent establishment in a province or territory of Canada"
+                },
+                {
+                  "value": "7",
+                  "label": "7 - Deemed resident reporting income from a business with\r\n     a permanent establishment outside Canada and/or\r\n     rental income from a property located outside Canada"
+                }
+              ]
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "SPOUSE0001",
+          "title": "Spouse or Common-law Partner",
+          "paragraphs": [
+            "Enter the following details regarding your spouse or common-law partner."
+          ],
+          "fields": [
+            {
+              "code": "SPOUS:00001:S",
+              "attributes": {
+                "ID": "SPOUS:00001:S",
+                "Column": "5"
+              },
+              "options": []
+            },
+            {
+              "code": "SPOUS:00011:T",
+              "attributes": {
+                "ID": "SPOUS:00011:T",
+                "Column": "5",
+                "Width": "6",
+                "MaxChars": "60"
+              },
+              "options": []
+            },
+            {
+              "code": "SPOUS:00013:T",
+              "attributes": {
+                "ID": "SPOUS:00013:T",
+                "Column": "5",
+                "Width": "6",
+                "MaxChars": "60"
+              },
+              "options": []
+            },
+            {
+              "code": "SPOUS:00031:D",
+              "attributes": {
+                "ID": "SPOUS:00031:D",
+                "Column": "5",
+                "MaxDate": "2025-12-31",
+                "EntryRequired": "true"
+              },
+              "options": []
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "SPOUSE0002",
+          "title": "Spouse's or Common-law Partner's Net Income",
+          "paragraphs": [
+            "Enter your spouse's or common-law partner's net income for [METAD:00001:I].",
+            "This is the amount on line 23600 of your spouse's or common-law partner's tax return, or the amount that it would be if he or she had filed a tax return. This amount is used when calculating certain tax credits and benefits that you may be entitled to.",
+            "If the net income from line 23600 of the return is negative before following the instruction on line 23600 that says \"if negative, enter 0\", enter the negative amount instead of entering \"0.00\".",
+            "Note: If you separated in [METAD:00001:I] because of a breakdown in your relationship for a period of at least 90 days that includes December 31, [METAD:00001:I], and were still not back together at the end of [METAD:00001:I], enter only your spouse's or common-law partner's net income for the period before the separation."
+          ],
+          "fields": [
+            {
+              "code": "SPOUS:00051:C",
+              "attributes": {
+                "ID": "SPOUS:00051:C",
+                "Column": "2"
+              },
+              "options": []
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "SPOUSE0004",
+          "title": "Spouse or Common-law Partner Self-Employed?",
+          "paragraphs": [
+            "Was your spouse or common-law partner self-employed during [METAD:00001:I]?"
+          ],
+          "fields": [
+            {
+              "code": "SPOUS:00061:R",
+              "attributes": {
+                "ID": "SPOUS:00061:R",
+                "Column": "2",
+                "EntryRequired": "true"
+              },
+              "options": [
+                {
+                  "value": "Yes",
+                  "label": "Yes"
+                },
+                {
+                  "value": "No",
+                  "label": "No"
+                }
+              ]
+            }
+          ],
+          "commands": []
+        },
+        {
+          "id": "SPOUSE0103",
+          "title": "Spouse or Common-law Partner a Resident of Canada?",
+          "paragraphs": [
+            "Was your spouse or common-law partner a resident of Canada at the end of [METAD:00001:I]?"
+          ],
+          "fields": [
+            {
+              "code": "SPOUS:00063:R",
+              "attributes": {
+                "ID": "SPOUS:00063:R",
+                "Column": "2",
+                "EntryRequired": "true"
+              },
+              "options": [
+                {
+                  "value": "Yes",
+                  "label": "Yes"
+                },
+                {
+                  "value": "No",
+                  "label": "No"
+                }
+              ]
+            }
+          ],
+          "commands": []
+        }
+      ]
+    }
+  ],
+  "runtimeVerification": {
+    "runtime": ".NET 10 native Linux; bundled AnyCPU copies of original yearly calculations",
+    "synthetic2021ManualSpouse": {
+      "primaryEmploymentIncome": "60000.00",
+      "maritalStatus": "MARR",
+      "claimSpouseAmount": "Yes",
+      "spouseNet0Line30300": "13808.00",
+      "spouseNet20000Line30300": "0.00"
+    },
+    "synthetic2021Coupled": {
+      "spouseEmploymentIncome": "20000.00",
+      "spouseComputedNetIncome": "19924.31",
+      "primaryDerivedSpouseNetIncome": "19924.31",
+      "mirrorDOBVerified": true
+    },
+    "parityLimit": "Focused mapping probes do not establish complete-return or Windows-reference parity."
+  }
+}

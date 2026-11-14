@@ -1,0 +1,32 @@
+{
+  "sourceSha256": "dba352f2ea4c91a6afb267903f2eb0b71379155fcfc4fdf3871027ebd6c7ce9e",
+  "artifactEvidenceId": "ev_4c23a5310a8a8a6474f1a9aa1faa807dadec6ae5df874956eb2a7675bde48a08",
+  "memberEvidenceId": "ev_b0e0e18278b118de68b99f7c91ee155e84124528dd301a2f03f719c6770c841b",
+  "sourceClass": "J4L.RBarcode.RPDF417",
+  "reEmittedMethods": 65,
+  "fields": 50,
+  "excludedMethods": [
+    "OnPaint",
+    "saveToFile"
+  ],
+  "uiReplacements": [
+    "Control constructor/Size",
+    "Graphics.Clear",
+    "Graphics.DrawLine",
+    "Pen"
+  ],
+  "networkRequired": false,
+  "diagnosticReplacements": ["VB SetProjectError delegates to original handler and records unexpected swallowed encoder errors"],
+  "sourceSnapshot": "SHA256 verified immutable byte snapshot before metadata reading and emission",
+  "wineRequired": false,
+  "referenceDpi": 300,
+  "independentDecoder": "Pillow + zxingcpp (optional verification only)",
+  "verifiedSyntheticCases": [
+    "ASCII exact bytes",
+    "Latin1 exact bytes",
+    "two-part1200byte Ordinary macro exact concatenation + file ID",
+    "two-part1200byte SFD header macro at60rows exact concatenation + file ID",
+    "SFD combined code overflow rejects without truncation"
+  ],
+  "pixelParityVerified": false
+}

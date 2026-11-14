@@ -1,0 +1,3463 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Tax Workbench local agent API",
+    "version": "0.9.0",
+    "description": "Native calculations, original-layout previews, offline SOAP validation, revisioned inputs and durable filing receipts. Monetary values are decimal strings. Full parity remains unverified. Live CRA transmission is controlled by owner settings and defaults off. Trusted agents can perform all API operations within the user’s authorization. Final transmission still requires explicit confirmation. Agents must resolve issues and filingInputIssues, verify year-specific identity/residency/marital/spouse/dependant facts and source carryovers, then recalculate, inspect original checks and pass offline validation with no financial differences or inactive inputs. Unknown is not No or zero. Authorized agents may review; transmit only when the user requests it."
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:36761"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "Fields": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "string"
+        },
+        "description": "Engine field codes mapped to strings. Example: T4SLI:00016:C:1 = \"3166.45\". METAD fields are reserved."
+      },
+      "Person": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "netfileAccessCode": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 8,
+            "pattern": "^([A-Za-z0-9]{8})?$",
+            "description": "Optional reusable personal detail. Copied into new returns; empty string or null clears the profile value. SIN must have a valid checksum."
+          },
+          "sin": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 160,
+            "description": "Optional reusable personal detail. Copied into new returns; empty string or null clears the profile value. SIN must have a valid checksum."
+          },
+          "firstName": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 160,
+            "description": "Optional reusable personal detail. Copied into new returns; empty string or null clears the profile value. SIN must have a valid checksum."
+          },
+          "middleName": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 160,
+            "description": "Optional reusable personal detail. Copied into new returns; empty string or null clears the profile value. SIN must have a valid checksum."
+          },
+          "lastName": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 160,
+            "description": "Optional reusable personal detail. Copied into new returns; empty string or null clears the profile value. SIN must have a valid checksum."
+          },
+          "addressCountry": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 160,
+            "description": "Optional reusable personal detail. Copied into new returns; empty string or null clears the profile value. SIN must have a valid checksum."
+          },
+          "addressUnit": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 160,
+            "description": "Optional reusable personal detail. Copied into new returns; empty string or null clears the profile value. SIN must have a valid checksum."
+          },
+          "streetNumber": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 160,
+            "description": "Optional reusable personal detail. Copied into new returns; empty string or null clears the profile value. SIN must have a valid checksum."
+          },
+          "streetName": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 160,
+            "description": "Optional reusable personal detail. Copied into new returns; empty string or null clears the profile value. SIN must have a valid checksum."
+          },
+          "poBox": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 160,
+            "description": "Optional reusable personal detail. Copied into new returns; empty string or null clears the profile value. SIN must have a valid checksum."
+          },
+          "city": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 160,
+            "description": "Optional reusable personal detail. Copied into new returns; empty string or null clears the profile value. SIN must have a valid checksum."
+          },
+          "mailingProvince": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 160,
+            "description": "Optional reusable personal detail. Copied into new returns; empty string or null clears the profile value. SIN must have a valid checksum."
+          },
+          "postalCode": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 160,
+            "description": "Optional reusable personal detail. Copied into new returns; empty string or null clears the profile value. SIN must have a valid checksum."
+          },
+          "careOf": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 160,
+            "description": "Optional reusable personal detail. Copied into new returns; empty string or null clears the profile value. SIN must have a valid checksum."
+          },
+          "notes": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 20000,
+            "description": "Miscellaneous per-person notes. Not copied into returns or sent to CRA. Empty string/null clears."
+          },
+          "expectedNotes": {
+            "type": "string",
+            "description": "PATCH only: exact previously saved notes for optimistic conflict checking; stale text returns409."
+          },
+          "name": {
+            "type": "string"
+          },
+          "birthDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "province": {
+            "type": "string",
+            "examples": [
+              "BC"
+            ]
+          },
+          "maritalStatus": {
+            "type": "string",
+            "enum": [
+              "MARR",
+              "COLA",
+              "WIDO",
+              "DIVO",
+              "SEPA",
+              "SING"
+            ],
+            "description": "Optional default copied into new yearly returns. Verify each year individually."
+          },
+          "residency": {
+            "type": "string",
+            "enum": [
+              "Yes",
+              "No"
+            ],
+            "default": "Yes",
+            "description": "Default full-year Canadian residency: Yes maps to RESID:00001:R=Yes before 2023 and RESID:00301:R=1 from 2023. No never guesses a newer-year advanced residency category."
+          }
+        }
+      },
+      "CreateReturn": {
+        "type": "object",
+        "required": [
+          "personId",
+          "year"
+        ],
+        "properties": {
+          "personId": {
+            "type": "string"
+          },
+          "year": {
+            "type": "integer",
+            "minimum": 2019,
+            "maximum": 2025
+          },
+          "fields": {
+            "$ref": "#/components/schemas/Fields"
+          },
+          "spouseFields": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Fields"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "filingMode": {
+            "type": "string",
+            "enum": [
+              "netfile",
+              "refile"
+            ],
+            "default": "netfile"
+          },
+          "priorConfirmation": {
+            "type": "string"
+          },
+          "priorFiledAt": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      },
+      "UpdateReturn": {
+        "type": "object",
+        "required": [
+          "expectedRevision",
+          "fields"
+        ],
+        "properties": {
+          "expectedRevision": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "fields": {
+            "$ref": "#/components/schemas/Fields"
+          },
+          "spouseFields": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Fields"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/v1/workspace": {
+      "get": {
+        "summary": "List people, returns and engine capabilities",
+        "responses": {
+          "200": {
+            "description": "Workspace"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      }
+    },
+    "/v1/changes": {
+      "get": {
+        "summary": "Poll persisted workspace version and UI asset fingerprint",
+        "description": "Poll every 1.5 seconds while visible. Refetch workspace/detail when version changes; preserve unsaved edits and use expectedRevision for conflict detection.",
+        "responses": {
+          "200": {
+            "description": "Version and uiVersion"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      }
+    },
+    "/v1/people": {
+      "post": {
+        "summary": "Create a person and default profile",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Person"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Person"
+          },
+          "201": {
+            "description": "Person created"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      }
+    },
+    "/v1/returns": {
+      "get": {
+        "summary": "List returns",
+        "responses": {
+          "200": {
+            "description": "Returns"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a return",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateReturn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Return"
+          },
+          "201": {
+            "description": "Return created"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      }
+    },
+    "/v1/returns/batch": {
+      "post": {
+        "summary": "Atomically create/update up to 100 returns",
+        "description": "New items use CreateReturn. Existing items add id and expectedRevision. One error rolls back the entire batch. Updates replace the complete fields map; fetch current data before editing.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "returns"
+                ],
+                "properties": {
+                  "returns": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 100,
+                    "items": {
+                      "anyOf": [
+                        {
+                          "$ref": "#/components/schemas/CreateReturn"
+                        },
+                        {
+                          "allOf": [
+                            {
+                              "$ref": "#/components/schemas/UpdateReturn"
+                            },
+                            {
+                              "type": "object",
+                              "required": [
+                                "id"
+                              ],
+                              "properties": {
+                                "id": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated returns"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      }
+    },
+    "/v1/returns/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Read inputs and current calculation",
+        "responses": {
+          "200": {
+            "description": "Return"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      },
+      "put": {
+        "summary": "Replace inputs with optimistic revision checking",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateReturn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated return; prior calculation invalidated"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      }
+    },
+    "/v1/returns/{id}/calculate": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "post": {
+        "summary": "Calculate the current input revision using native .NET",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "expectedRevision"
+                ],
+                "properties": {
+                  "expectedRevision": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Immutable calculation snapshot"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      }
+    },
+    "/v1/returns/{id}/review": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "post": {
+        "summary": "Record human review of the current snapshot",
+        "description": "Review is a local record. It does not establish calculation parity, certification or filing readiness.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "expectedRevision",
+                  "calculationId"
+                ],
+                "properties": {
+                  "expectedRevision": {
+                    "type": "integer"
+                  },
+                  "calculationId": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Reviewed snapshot"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      }
+    },
+    "/v1/returns/{id}/history": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Read input revisions, calculation history and review records",
+        "responses": {
+          "200": {
+            "description": "History"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      }
+    },
+    "/v1/returns/{id}/export": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Export the complete local return as JSON",
+        "responses": {
+          "200": {
+            "description": "JSON export; not a CRA filing payload"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      }
+    },
+    "/v1/returns/{id}/forms": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "summary": "List original yearly form layouts for the calculated snapshot",
+        "responses": {
+          "200": {
+            "description": "Catalog, recommended/included forms, calculationId and inputRevision"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      }
+    },
+    "/v1/returns/{id}/preview": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "formId",
+          "in": "query",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "page",
+          "in": "query",
+          "schema": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        {
+          "name": "instance",
+          "in": "query",
+          "schema": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      ],
+      "get": {
+        "summary": "Render an original form layout with saved calculated fields",
+        "description": "Returns SVG in JSON plus warnings and source identity. Unsupported layouts fail explicitly. Not a paper-filing copy and visual parity is unverified.",
+        "responses": {
+          "200": {
+            "description": "SVG and coverage"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          },
+          "422": {
+            "description": "Unsupported layout feature"
+          }
+        }
+      }
+    },
+    "/v1/returns/{id}/filing": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Read permanent submission history, receipts, next mode and filing capability",
+        "description": "Accepted history survives input changes. An unresolved outcome blocks new transmissions.",
+        "responses": {
+          "200": {
+            "description": "Filing state"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      }
+    },
+    "/v1/returns/{id}/receipt": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "attemptId",
+          "in": "query",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Export a stored attempt and its parsed acknowledgement",
+        "responses": {
+          "200": {
+            "description": "Receipt JSON with local date-source information"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      }
+    },
+    "/v1/returns/{id}/validate": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "post": {
+        "summary": "Offline native SOAP/XSD validation without sending",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "expectedRevision",
+                  "calculationId"
+                ],
+                "properties": {
+                  "expectedRevision": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "calculationId": {
+                    "type": "string"
+                  },
+                  "mode": {
+                    "type": "string",
+                    "enum": [
+                      "netfile",
+                      "refile"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Offline validation or expiring confirmation plan"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      }
+    },
+    "/v1/returns/{id}/prepare-submission": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "post": {
+        "summary": "Prepare a snapshot-bound, expiring human confirmation",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "expectedRevision",
+                  "calculationId"
+                ],
+                "properties": {
+                  "expectedRevision": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "calculationId": {
+                    "type": "string"
+                  },
+                  "mode": {
+                    "type": "string",
+                    "enum": [
+                      "netfile",
+                      "refile"
+                    ]
+                  },
+                  "termsId": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Offline validation or expiring confirmation plan"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      }
+    },
+    "/v1/returns/{id}/submit": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "post": {
+        "summary": "Confirm a prepared human filing action (authorized owner or agent)",
+        "description": "Call only when the user explicitly authorizes transmission. Requires current reviewed snapshot, unexpired plan, exact phrase, terms acceptance and confirmation. ReFILE also requires confirmResubmission. Idempotency replays never transmit twice; unknown outcomes never automatically retry. Only trusted CRA acceptance with a confirmation code records filed status.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "challengeId",
+                  "idempotencyKey",
+                  "confirmed",
+                  "acceptedTerms",
+                  "phrase"
+                ],
+                "properties": {
+                  "challengeId": {
+                    "type": "string"
+                  },
+                  "idempotencyKey": {
+                    "type": "string",
+                    "minLength": 12,
+                    "maxLength": 100
+                  },
+                  "confirmed": {
+                    "const": true
+                  },
+                  "acceptedTerms": {
+                    "const": true
+                  },
+                  "confirmResubmission": {
+                    "type": "boolean"
+                  },
+                  "phrase": {
+                    "type": "string"
+                  },
+                  "acknowledgements": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Immutable attempt and receipt status"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Live setting disabled, stale plan or unresolved outcome"
+          }
+        }
+      }
+    },
+    "/v1/engine": {
+      "get": {
+        "summary": "Read the native engine health and parity status",
+        "responses": {
+          "200": {
+            "description": "Engine health"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      }
+    },
+    "/v1/input-mappings/{year}": {
+      "parameters": [
+        {
+          "name": "year",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "integer",
+            "minimum": 2019,
+            "maximum": 2025
+          }
+        }
+      ],
+      "get": {
+        "summary": "Read verified selected source-field mappings, option values and yearly residency differences",
+        "description": "Includes marital/spouse inputs and T5 additional-box storage. This is selected mapping coverage, not a complete input model.",
+        "responses": {
+          "200": {
+            "description": "Source mappings"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      }
+    },
+    "/v1/fields/{year}": {
+      "parameters": [
+        {
+          "name": "year",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "integer",
+            "minimum": 2019,
+            "maximum": 2025
+          }
+        }
+      ],
+      "get": {
+        "summary": "Read REA-discovered field-code literals",
+        "description": "Includes inputs and computed outputs. Template loop identifiers such as {0} require substitution.",
+        "responses": {
+          "200": {
+            "description": "Field codes"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      }
+    },
+    "/v1/session": {
+      "parameters": [],
+      "get": {
+        "summary": "Read current token role and capabilities",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Result; mutations invalidate prior calculation and review where applicable"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      }
+    },
+    "/v1/agent-connection": {
+      "parameters": [],
+      "get": {
+        "summary": "Get scoped preparation-agent connection instructions",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Result; mutations invalidate prior calculation and review where applicable"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      }
+    },
+    "/v1/agent-instructions": {
+      "parameters": [],
+      "get": {
+        "summary": "Get the current shared preparation guide and scoped preparation credentials",
+        "description": "Contains the preparation token, never the owner token. The desktop Copy agent instructions action uses this same guide.",
+        "responses": {
+          "200": {
+            "description": "Result; mutations invalidate prior calculation and review where applicable"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      }
+    },
+    "/v1/settings": {
+      "parameters": [],
+      "get": {
+        "summary": "Read persisted workspace settings",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Result; mutations invalidate prior calculation and review where applicable"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update live settings (authorized owner or agent)",
+        "description": "Enabling alone sends nothing. Public IPv4 defaults to automatic detection before live preparation; manual override is supported. Any settings change invalidates existing live confirmation plans.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "expectedRevision": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "liveSubmissions": {
+                    "type": "boolean",
+                    "default": false
+                  },
+                  "originatingIP": {
+                    "type": "string"
+                  },
+                  "originatingIPMode": {
+                    "type": "string",
+                    "enum": [
+                      "automatic",
+                      "manual"
+                    ],
+                    "default": "automatic"
+                  },
+                  "interviewDefaults": {
+                    "type": "string",
+                    "enum": [
+                      "review",
+                      "none"
+                    ]
+                  }
+                },
+                "required": [
+                  "expectedRevision"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result; mutations invalidate prior calculation and review where applicable"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      }
+    },
+    "/v1/settings/detect-ip": {
+      "parameters": [],
+      "post": {
+        "summary": "Detect this computer’s current public IPv4",
+        "description": "Explicit external lookup using fixed HTTPS providers; no tax data is sent. Returns originatingIP, detectedAt and provider without changing settings.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {},
+                "required": []
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result; mutations invalidate prior calculation and review where applicable"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      }
+    },
+    "/v1/people/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Read person profile and notes",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Result; mutations invalidate prior calculation and review where applicable"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update person profile defaults",
+        "description": "Existing yearly inputs are snapshots and are not rewritten.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [],
+                "properties": {
+                  "netfileAccessCode": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "maxLength": 8,
+                    "pattern": "^([A-Za-z0-9]{8})?$",
+                    "description": "Optional reusable personal detail. Copied into new returns; empty string or null clears the profile value. SIN must have a valid checksum."
+                  },
+                  "sin": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "maxLength": 160,
+                    "description": "Optional reusable personal detail. Copied into new returns; empty string or null clears the profile value. SIN must have a valid checksum."
+                  },
+                  "firstName": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "maxLength": 160,
+                    "description": "Optional reusable personal detail. Copied into new returns; empty string or null clears the profile value. SIN must have a valid checksum."
+                  },
+                  "middleName": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "maxLength": 160,
+                    "description": "Optional reusable personal detail. Copied into new returns; empty string or null clears the profile value. SIN must have a valid checksum."
+                  },
+                  "lastName": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "maxLength": 160,
+                    "description": "Optional reusable personal detail. Copied into new returns; empty string or null clears the profile value. SIN must have a valid checksum."
+                  },
+                  "addressCountry": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "maxLength": 160,
+                    "description": "Optional reusable personal detail. Copied into new returns; empty string or null clears the profile value. SIN must have a valid checksum."
+                  },
+                  "addressUnit": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "maxLength": 160,
+                    "description": "Optional reusable personal detail. Copied into new returns; empty string or null clears the profile value. SIN must have a valid checksum."
+                  },
+                  "streetNumber": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "maxLength": 160,
+                    "description": "Optional reusable personal detail. Copied into new returns; empty string or null clears the profile value. SIN must have a valid checksum."
+                  },
+                  "streetName": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "maxLength": 160,
+                    "description": "Optional reusable personal detail. Copied into new returns; empty string or null clears the profile value. SIN must have a valid checksum."
+                  },
+                  "poBox": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "maxLength": 160,
+                    "description": "Optional reusable personal detail. Copied into new returns; empty string or null clears the profile value. SIN must have a valid checksum."
+                  },
+                  "city": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "maxLength": 160,
+                    "description": "Optional reusable personal detail. Copied into new returns; empty string or null clears the profile value. SIN must have a valid checksum."
+                  },
+                  "mailingProvince": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "maxLength": 160,
+                    "description": "Optional reusable personal detail. Copied into new returns; empty string or null clears the profile value. SIN must have a valid checksum."
+                  },
+                  "postalCode": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "maxLength": 160,
+                    "description": "Optional reusable personal detail. Copied into new returns; empty string or null clears the profile value. SIN must have a valid checksum."
+                  },
+                  "careOf": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "maxLength": 160,
+                    "description": "Optional reusable personal detail. Copied into new returns; empty string or null clears the profile value. SIN must have a valid checksum."
+                  },
+                  "notes": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "maxLength": 20000,
+                    "description": "Miscellaneous per-person notes. Not copied into returns or sent to CRA. Empty string/null clears."
+                  },
+                  "expectedNotes": {
+                    "type": "string",
+                    "description": "PATCH only: exact previously saved notes for optimistic conflict checking; stale text returns409."
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "birthDate": {
+                    "type": "string",
+                    "format": "date"
+                  },
+                  "province": {
+                    "type": "string",
+                    "examples": [
+                      "BC"
+                    ]
+                  },
+                  "maritalStatus": {
+                    "type": "string",
+                    "enum": [
+                      "MARR",
+                      "COLA",
+                      "WIDO",
+                      "DIVO",
+                      "SEPA",
+                      "SING"
+                    ],
+                    "description": "Optional default copied into new yearly returns. Verify each year individually."
+                  },
+                  "residency": {
+                    "type": "string",
+                    "enum": [
+                      "Yes",
+                      "No"
+                    ],
+                    "default": "Yes",
+                    "description": "Default full-year Canadian residency: Yes maps to RESID:00001:R=Yes before 2023 and RESID:00301:R=1 from 2023. No never guesses a newer-year advanced residency category."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result; mutations invalidate prior calculation and review where applicable"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      }
+    },
+    "/v1/returns/{id}/fields": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "patch": {
+        "summary": "Set and unset selected input fields",
+        "description": "",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "expectedRevision": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "set": {
+                    "$ref": "#/components/schemas/Fields"
+                  },
+                  "unset": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "spouseSet": {
+                    "$ref": "#/components/schemas/Fields"
+                  },
+                  "spouseUnset": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "expectedRevision"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result; mutations invalidate prior calculation and review where applicable"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      }
+    },
+    "/v1/returns/{id}/slips": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Read structured slips and the year-specific T5013 box catalog",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Result; mutations invalidate prior calculation and review where applicable"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create or edit a structured slip",
+        "description": "Box values are decimal strings. T4 16A/17A require 2024+. T4A COVID197/202 use2020+; T4E37 uses2020+ (36 in2019), and rate7 is explicit. Other boxes use exact native fields. T5013 supports every monetary/descriptive box in the year-specific GET slips t5013Catalog. Values use original fields; text115 may be in boxes or textBoxes. Optional boxes accept null to clear;116/118 cannot be cleared. Business box116 requires118. Gross income is required from the corrected issued slip, with no missing/null/blank substitution; requires partnershipNumber,fiscalEnd,issued partnerCode0–6,sourceReference,issuedSlipConfirmed=true. Business income also requires allocationPercentage,industryCode,accountingMethod. Only active code2 business slips can replace linked business books. Link the existing partnership business to prevent double counting; original source records remain saved. This imports a slip into a T1 and does not file a T5013-FIN or slips/summary return.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "expectedRevision": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "type": {
+                    "enum": [
+                      "T4",
+                      "T5",
+                      "T4A",
+                      "T4E",
+                      "T5013"
+                    ]
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "issuer": {
+                    "type": "string"
+                  },
+                  "employmentProvince": {
+                    "type": "string"
+                  },
+                  "boxes": {
+                    "type": "object",
+                    "properties": {
+                      "118": {
+                        "type": "string",
+                        "description": "T5013 active-business gross income is required from the corrected issued slip. No null, blank or invented zero. A partial patch can omit this property only when its existing value is retained."
+                      }
+                    },
+                    "additionalProperties": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "replace": {
+                    "type": "boolean"
+                  },
+                  "partnershipNumber": {
+                    "type": "string",
+                    "pattern": "^[0-9]{9}$"
+                  },
+                  "fiscalEnd": {
+                    "type": "string",
+                    "format": "date"
+                  },
+                  "partnerCode": {
+                    "type": "string",
+                    "enum": [
+                      "0",
+                      "1",
+                      "2",
+                      "3",
+                      "4",
+                      "5",
+                      "6"
+                    ]
+                  },
+                  "allocationPercentage": {
+                    "type": "string",
+                    "description": "Box005 share of net income/loss,0–100, at most two meaningful decimal places; not legal ownership."
+                  },
+                  "legalOwnershipPercentage": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "industryCode": {
+                    "type": "string",
+                    "pattern": "^[1-9][0-9]{5}$"
+                  },
+                  "accountingMethod": {
+                    "type": "string",
+                    "enum": [
+                      "1",
+                      "2"
+                    ],
+                    "description": "Original T5013 codes:1 accrual,2 cash. Earlier Workbench labels were reversed; verify existing inputs against the source."
+                  },
+                  "linkedBusinessId": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "Existing partnership business replaced by this slip. Books and agreement remain saved but are excluded from this personal calculation and export."
+                  },
+                  "sourceReference": {
+                    "type": "string"
+                  },
+                  "issuedSlipConfirmed": {
+                    "type": "boolean",
+                    "description": "Explicit confirmation of an actual issued slip; never infer from an allocation agreement."
+                  },
+                  "textBoxes": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "description": "All original descriptive boxes, including115. Box105 has both numeric and text forms; use textBoxes105 for its description."
+                  },
+                  "boxCountries": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "textBoxCountries": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "covidAssistance": {
+                    "type": "string",
+                    "description": "Explicit portion of box114 that is COVID assistance. Required for nonzero114 when the yearly model supports it;0 means ordinary other income. Never inferred from115."
+                  },
+                  "recipientCountry": {
+                    "type": "string"
+                  },
+                  "recipientType": {
+                    "type": "string",
+                    "enum": [
+                      "1",
+                      "3",
+                      "4"
+                    ]
+                  },
+                  "taxShelterNumber": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "expectedRevision",
+                  "type"
+                ],
+                "allOf": [
+                  {
+                    "if": {
+                      "properties": {
+                        "type": {
+                          "enum": [
+                            "T4",
+                            "T5",
+                            "T4A",
+                            "T4E"
+                          ]
+                        }
+                      }
+                    },
+                    "then": {
+                      "required": [
+                        "boxes"
+                      ],
+                      "properties": {
+                        "boxes": {
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result; mutations invalidate prior calculation and review where applicable"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a structured slip",
+        "description": "",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "expectedRevision": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "type": {
+                    "enum": [
+                      "T4",
+                      "T5",
+                      "T4A",
+                      "T4E",
+                      "T5013"
+                    ]
+                  },
+                  "id": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "expectedRevision",
+                  "type",
+                  "id"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result; mutations invalidate prior calculation and review where applicable"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      }
+    },
+    "/v1/returns/{id}/copy-year": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "post": {
+        "summary": "Copy identity into another year",
+        "description": "Copies identity/profile only; dryRun must be explicitly true for a proposal.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "expectedRevision": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "targetYear": {
+                    "type": "integer"
+                  },
+                  "dryRun": {
+                    "type": "boolean"
+                  },
+                  "targetReturnId": {
+                    "type": "string"
+                  },
+                  "expectedTargetRevision": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "fields": {
+                    "$ref": "#/components/schemas/Fields"
+                  },
+                  "filingMode": {
+                    "enum": [
+                      "netfile",
+                      "refile"
+                    ]
+                  }
+                },
+                "required": [
+                  "expectedRevision",
+                  "targetYear"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result; mutations invalidate prior calculation and review where applicable"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      }
+    },
+    "/v1/returns/{id}/carry-forward": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "post": {
+        "summary": "Propose original next-year carryforward",
+        "description": "Dry run defaults true. Native target-year CarryForwardData rules; existing target values preserved and conflicts reported. Applying to an existing target requires its ID/revision.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "expectedRevision": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "targetYear": {
+                    "type": "integer"
+                  },
+                  "dryRun": {
+                    "type": "boolean"
+                  },
+                  "targetReturnId": {
+                    "type": "string"
+                  },
+                  "expectedTargetRevision": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "fields": {
+                    "$ref": "#/components/schemas/Fields"
+                  },
+                  "filingMode": {
+                    "enum": [
+                      "netfile",
+                      "refile"
+                    ]
+                  }
+                },
+                "required": [
+                  "expectedRevision",
+                  "targetYear"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result; mutations invalidate prior calculation and review where applicable"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      }
+    },
+    "/v1/returns/{id}/filing-mode": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "put": {
+        "summary": "Choose new filing or amendment",
+        "description": "",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "expectedRevision": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "filingMode": {
+                    "enum": [
+                      "netfile",
+                      "refile"
+                    ]
+                  },
+                  "priorConfirmation": {
+                    "type": "string"
+                  },
+                  "priorFiledAt": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "expectedRevision",
+                  "filingMode"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result; mutations invalidate prior calculation and review where applicable"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      }
+    },
+    "/v1/returns/{id}/baseline": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "post": {
+        "summary": "Import original accepted request for amendment comparison",
+        "description": "Original SOAP request must validate and match taxpayer SIN and year. This does not fabricate a locally accepted receipt.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "expectedRevision": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "payloadXml": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "expectedRevision",
+                  "payloadXml"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result; mutations invalidate prior calculation and review where applicable"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      }
+    },
+    "/v1/returns/{id}/restore": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "post": {
+        "summary": "Restore saved input revision as a new revision",
+        "description": "",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "expectedRevision": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "revision": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                },
+                "required": [
+                  "expectedRevision",
+                  "revision"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result; mutations invalidate prior calculation and review where applicable"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      }
+    },
+    "/v1/returns/{id}/cleanup": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "post": {
+        "summary": "Inspect or explicitly apply original inactive-data cleanup",
+        "description": "Proposal by default. Apply requires confirmed:true. Changes are revisioned.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "expectedRevision": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "apply": {
+                    "type": "boolean"
+                  },
+                  "confirmed": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "expectedRevision"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result; mutations invalidate prior calculation and review where applicable"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      }
+    },
+    "/v1/returns/{id}/interview": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Read searchable original yearly interview",
+        "description": "Query: taxpayer primary/spouse, section, search, answered, relevance, offset, limit, instances (comma separated). Unknown conditions stay unknown.",
+        "responses": {
+          "200": {
+            "description": "Result; mutations invalidate prior calculation and review where applicable"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      },
+      "post": {
+        "summary": "Save exact original interview answers",
+        "description": "Use ?taxpayer=spouse for the paired spouse. Defaults require confirmed:true and selected codes; identity, income and consent are never guessed.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "expectedRevision": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "answers": {
+                    "$ref": "#/components/schemas/Fields"
+                  },
+                  "codes": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "confirmed": {
+                    "type": "boolean"
+                  },
+                  "section": {
+                    "type": "string"
+                  },
+                  "topicId": {
+                    "type": "string"
+                  },
+                  "instances": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "expectedRevision"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result; mutations invalidate prior calculation and review where applicable"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      }
+    },
+    "/v1/returns/{id}/interview-defaults": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Propose conservative optional No/zero answers",
+        "description": "Query: taxpayer primary/spouse, section, search, answered, relevance, offset, limit, instances (comma separated). Unknown conditions stay unknown.",
+        "responses": {
+          "200": {
+            "description": "Result; mutations invalidate prior calculation and review where applicable"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      },
+      "post": {
+        "summary": "Apply reviewed optional defaults",
+        "description": "Use ?taxpayer=spouse for the paired spouse. Defaults require confirmed:true and selected codes; identity, income and consent are never guessed.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "expectedRevision": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "answers": {
+                    "$ref": "#/components/schemas/Fields"
+                  },
+                  "codes": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "confirmed": {
+                    "type": "boolean"
+                  },
+                  "section": {
+                    "type": "string"
+                  },
+                  "topicId": {
+                    "type": "string"
+                  },
+                  "instances": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "expectedRevision"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result; mutations invalidate prior calculation and review where applicable"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      }
+    },
+    "/v1/returns/{id}/acknowledgements": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Read durable original-confirmation acknowledgements",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Result; mutations invalidate prior calculation and review where applicable"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      },
+      "post": {
+        "summary": "Record user-authorized answers to original confirmations",
+        "description": "Records actual owner answers; does not submit or invent source values. Related source edits stale acknowledgements.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "expectedRevision": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "calculationId": {
+                    "type": "string"
+                  },
+                  "ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "sourceReference": {
+                    "type": "string",
+                    "maxLength": 4000
+                  }
+                },
+                "required": [
+                  "expectedRevision",
+                  "calculationId",
+                  "ids",
+                  "sourceReference"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result; mutations invalidate prior calculation and review where applicable"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      }
+    },
+    "/v1/returns/{id}/checks": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Evaluate original interview validation conditions",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Result; mutations invalidate prior calculation and review where applicable"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      }
+    },
+    "/v1/returns/{id}/terms": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "post": {
+        "summary": "Fetch current CRA terms (authorized, live enabled)",
+        "description": "This contacts CRA but sends no taxpayer return. Terms expire after ten minutes.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "mode": {
+                    "enum": [
+                      "netfile",
+                      "refile"
+                    ]
+                  }
+                },
+                "required": []
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result; mutations invalidate prior calculation and review where applicable"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      }
+    },
+    "/v1/returns/{id}/rrsp": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Read original RRSP receipt periods and deduction controls",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Result; mutations invalidate prior calculation and review where applicable"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      },
+      "post": {
+        "summary": "Edit RRSP receipts without inventing deduction room",
+        "description": "Amounts are decimal strings. Null clears one input. Receipt periods remain separate; CRA room is not inferred. Annuitant code1: single or spouse never contributed;2: spouse contributed.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "expectedRevision": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "deductionLimit": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "unusedContributions": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "carryForwardAmount": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "replaceReceipts": {
+                    "type": "boolean"
+                  },
+                  "receipts": {
+                    "type": "array",
+                    "maxItems": 100,
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "issuer": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "maxLength": 60
+                        },
+                        "planNumber": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "maxLength": 30
+                        },
+                        "contractNumber": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "maxLength": 30
+                        },
+                        "lastTenMonths": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "first60DaysFollowing": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "annuitantCode": {
+                          "enum": [
+                            "",
+                            "1",
+                            "2",
+                            null
+                          ]
+                        }
+                      },
+                      "required": []
+                    }
+                  }
+                },
+                "required": [
+                  "expectedRevision"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result; mutations invalidate prior calculation and review where applicable"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      }
+    },
+    "/v1/foreign-tax-mappings/{year}": {
+      "parameters": [
+        {
+          "name": "year",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "integer",
+            "minimum": 2019,
+            "maximum": 2025
+          }
+        }
+      ],
+      "get": {
+        "summary": "Read original yearly foreign-tax questions and source identities",
+        "responses": {
+          "200": {
+            "description": "Yearly FORTX/FORTR metadata"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      }
+    },
+    "/v1/business-mappings/{year}": {
+      "parameters": [
+        {
+          "name": "year",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "integer",
+            "minimum": 2019,
+            "maximum": 2025
+          }
+        }
+      ],
+      "get": {
+        "summary": "Read original yearly business, expense, home office and CCA source fields",
+        "responses": {
+          "200": {
+            "description": "Hash-bound original metadata and limitations"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      }
+    },
+    "/v1/returns/{id}/decisions": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Read persisted owner preparation decisions, source limits and history",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Result; mutations invalidate prior calculation and review where applicable"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      },
+      "post": {
+        "summary": "Record an owner source decision without reviewing or filing",
+        "description": "Authorized agents may record owner instructions. Estimates/selected positions retain unverified metadata. Relevant source changes stale acknowledgements. Clears human review, retains calculated amounts.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "expectedRevision": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "topic": {
+                    "enum": [
+                      "home-office",
+                      "inventory",
+                      "cca",
+                      "carryforward",
+                      "filing-origin",
+                      "marital-status",
+                      "capital-loss",
+                      "source-completeness",
+                      "partnership-allocation"
+                    ]
+                  },
+                  "businessId": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "enum": [
+                      "confirmed",
+                      "estimate-accepted",
+                      "selected-treatment",
+                      "unresolved",
+                      "note"
+                    ]
+                  },
+                  "description": {
+                    "type": "string",
+                    "maxLength": 4000
+                  },
+                  "sourceReference": {
+                    "type": "string",
+                    "maxLength": 4000
+                  }
+                },
+                "required": [
+                  "expectedRevision",
+                  "topic",
+                  "status",
+                  "description",
+                  "sourceReference"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result; mutations invalidate prior calculation and review where applicable"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      }
+    },
+    "/v1/returns/{id}/amendment": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Compare current inputs with the latest immutable accepted snapshot",
+        "description": "Read-only accepted/current spouse net income, sourceChanges, totals and current ReFILE availability. No calculation, review or transmission. Existing accepted history is required. Current2026 ReFILE supports2022–2025. An empty original refileDifferences list does not mean spouse-income changes are absent from the complete request.",
+        "responses": {
+          "200": {
+            "description": "Result; mutations invalidate prior calculation and review where applicable"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      }
+    },
+    "/v1/returns/{id}/spouse-source": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Read explicit spouse net-income source and stale checks",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Result; mutations invalidate prior calculation and review where applicable"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      },
+      "post": {
+        "summary": "Link a calculated same-year spouse return and copy its net income",
+        "description": "Explicit different-person same-year source only; never infer a relationship. Changed/un-calculated spouse amounts block review; same-amount recalculation remains valid.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "expectedRevision": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "sourceReturnId": {
+                    "type": "string"
+                  },
+                  "sourceCalculationId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "expectedRevision",
+                  "sourceReturnId",
+                  "sourceCalculationId"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result; mutations invalidate prior calculation and review where applicable"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Remove a spouse-income link while preserving its copied amount",
+        "description": "",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "expectedRevision": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                },
+                "required": [
+                  "expectedRevision"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result; mutations invalidate prior calculation and review where applicable"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      }
+    },
+    "/v1/returns/{id}/pdf": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "expectedRevision",
+          "in": "query",
+          "schema": {
+            "type": "integer"
+          }
+        },
+        {
+          "name": "calculationId",
+          "in": "query",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Download complete saved return review PDF",
+        "description": "Native print-list pages in order, every repeated entry, source choices and supporting schedules. Current saved calculation required; optional revision/ID pinning, stale exports rejected. No review, filing or network submission. PDF rendering uses the desktop renderer; standalone API without an injected renderer returns503. Review copies are not paper-filing output.",
+        "responses": {
+          "200": {
+            "description": "Review document; X-Input-Revision and X-Calculation-Id bind the snapshot",
+            "content": {
+              "application/pdf": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "No current calculated snapshot or snapshot changed"
+          },
+          "422": {
+            "description": "Original page unavailable or incomplete; no partial export"
+          },
+          "503": {
+            "description": "Desktop PDF renderer unavailable"
+          }
+        }
+      }
+    },
+    "/v1/returns/{id}/print-report": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "expectedRevision",
+          "in": "query",
+          "schema": {
+            "type": "integer"
+          }
+        },
+        {
+          "name": "calculationId",
+          "in": "query",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Read complete standalone HTML review pack",
+        "description": "Native print-list pages in order, every repeated entry, source choices and supporting schedules. Current saved calculation required; optional revision/ID pinning, stale exports rejected. No review, filing or network submission. PDF rendering uses the desktop renderer; standalone API without an injected renderer returns503. Review copies are not paper-filing output.",
+        "responses": {
+          "200": {
+            "description": "Review document; X-Input-Revision and X-Calculation-Id bind the snapshot",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "No current calculated snapshot or snapshot changed"
+          },
+          "422": {
+            "description": "Original page unavailable or incomplete; no partial export"
+          },
+          "503": {
+            "description": "Desktop PDF renderer unavailable"
+          }
+        }
+      }
+    },
+    "/v1/returns/{id}/businesses": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Read separate business records and original yearly catalog",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Result; mutations invalidate prior calculation and review where applicable"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create or partially edit original business inputs",
+        "description": "Full named input categories and original CCA codes are in business-mappings/{year}. New records require name/type/ownership/accounting/fiscal dates. No net or total-CCA override. Use allocation with explicit agreed profit/loss percentages when different from legal ownership. Null removes this Workbench extension. Ownership remains unchanged in previews and SOAP. For a synthetic unequal-allocation example: ownership50,profit50,loss99.9 from2021 onward. Find the actual business ID, preserve other businesses, and recalculate. Profit years remain50%; never force ownership100 or override net income. Inspect calculation.result.allocationAdjustments; human review and filing remain separate.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "expectedRevision": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "enum": [
+                      "PROF",
+                      "COMM",
+                      "OTHR"
+                    ]
+                  },
+                  "ownership": {
+                    "enum": [
+                      "SOLE",
+                      "PART"
+                    ]
+                  },
+                  "ownershipPercentage": {
+                    "type": "string"
+                  },
+                  "allocation": {
+                    "type": [
+                      "object",
+                      "null"
+                    ],
+                    "properties": {
+                      "profitPercentage": {
+                        "type": "string"
+                      },
+                      "lossPercentage": {
+                        "type": "string"
+                      },
+                      "agreementConfirmed": {
+                        "const": true
+                      }
+                    },
+                    "required": [
+                      "profitPercentage",
+                      "lossPercentage",
+                      "agreementConfirmed"
+                    ]
+                  },
+                  "accounting": {
+                    "enum": [
+                      "CASH",
+                      "ACCR"
+                    ]
+                  },
+                  "fiscalStart": {
+                    "type": "string",
+                    "format": "date"
+                  },
+                  "fiscalEnd": {
+                    "type": "string",
+                    "format": "date"
+                  },
+                  "sales": {
+                    "type": "string"
+                  },
+                  "expenses": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "homeOffice": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "ccaClasses": {
+                    "type": "array",
+                    "items": {
+                      "type": "object"
+                    }
+                  },
+                  "ccaClaim": {
+                    "type": "object"
+                  },
+                  "homeOfficeClaim": {
+                    "type": [
+                      "object",
+                      "null"
+                    ],
+                    "required": [
+                      "currentExpenses",
+                      "priorUnusedExpenses",
+                      "eligibilityConfirmed",
+                      "sourceReference",
+                      "basis"
+                    ],
+                    "properties": {
+                      "currentExpenses": {
+                        "type": "string"
+                      },
+                      "priorUnusedExpenses": {
+                        "type": "string"
+                      },
+                      "eligibilityConfirmed": {
+                        "type": "boolean"
+                      },
+                      "sourceReference": {
+                        "type": "string"
+                      },
+                      "basis": {
+                        "type": "string"
+                      }
+                    },
+                    "description": "Already apportioned business-use costs, mutually exclusive with whole-home costs. False eligibility remains provisional. An explicit scoped owner decision can acknowledge a selected position while retaining the unverified metadata; otherwise review/filing is blocked."
+                  },
+                  "inventoryAccounting": {
+                    "type": [
+                      "object",
+                      "null"
+                    ],
+                    "required": [
+                      "signedCostOfGoods",
+                      "sourceBasis"
+                    ],
+                    "properties": {
+                      "signedCostOfGoods": {
+                        "const": true
+                      },
+                      "sourceBasis": {
+                        "type": "string"
+                      },
+                      "sourceValuesConfirmed": {
+                        "type": "boolean",
+                        "default": false
+                      }
+                    },
+                    "description": "Explicit signed cost-of-goods accounting for an accrual business. Preserve original stock/cost inputs; never invent other income to compensate for a stock movement."
+                  },
+                  "enhancedCca2024": {
+                    "type": [
+                      "array",
+                      "null"
+                    ],
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "classId",
+                        "assetId",
+                        "eligibilityConfirmed",
+                        "acquiredDate",
+                        "availableForUseDate",
+                        "sourceReference",
+                        "eligibilityBasis"
+                      ],
+                      "properties": {
+                        "classId": {
+                          "type": "string"
+                        },
+                        "assetId": {
+                          "type": "string"
+                        },
+                        "eligibilityConfirmed": {
+                          "type": "boolean"
+                        },
+                        "acquiredDate": {
+                          "type": "string",
+                          "format": "date"
+                        },
+                        "availableForUseDate": {
+                          "type": "string",
+                          "format": "date"
+                        },
+                        "sourceReference": {
+                          "type": "string"
+                        },
+                        "eligibilityBasis": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "description": "2024 class50 qualifying original additions only. Explicit dates and restrictions; false eligibility remains a source issue unless an explicit scoped owner decision acknowledges the selected position."
+                  }
+                },
+                "required": [
+                  "expectedRevision"
+                ]
+              },
+              "examples": {
+                "exampleAgreement": {
+                  "summary": "Synthetic example:50% ownership,50% profits,99.9% losses; existing business",
+                  "value": {
+                    "expectedRevision": 3,
+                    "id": "ACTUAL_PARTNERSHIP_BUSINESS_ID",
+                    "ownership": "PART",
+                    "ownershipPercentage": "50",
+                    "allocation": {
+                      "profitPercentage": "50",
+                      "lossPercentage": "99.9",
+                      "agreementConfirmed": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result; mutations invalidate prior calculation and review where applicable"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Remove business and its associated asset records",
+        "description": "Revision history is preserved.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "expectedRevision": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "id": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "expectedRevision",
+                  "id"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result; mutations invalidate prior calculation and review where applicable"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      }
+    },
+    "/v1/returns/{id}/business-schedules": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Read supplementary business calculation and source review schedules",
+        "responses": {
+          "200": {
+            "description": "Escaped review HTML with calculationId and inputRevision; not a CRA form"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Bearer token required"
+          },
+          "409": {
+            "description": "Revision conflict"
+          }
+        }
+      }
+    }
+  }
+}

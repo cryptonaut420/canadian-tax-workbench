@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>NativeFiling</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../native-common/InterviewConditions.cs" Link="InterviewConditions.cs" />
+    <Content Include="../native-interview/*.json.gz" Link="interviews/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="../native-interview/manifest.json" Link="interviews/manifest.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <Compile Include="../native-common/CryptoSchedule.cs" Link="CryptoSchedule.cs" />
+    <Compile Include="../native-common/EnhancedCca2024.cs" Link="EnhancedCca2024.cs" />
+    <Compile Include="../native-common/BusinessDataTable.cs" Link="BusinessDataTable.cs" />
+    <Compile Include="../native-common/PreapportionedHomeOffice.cs" Link="PreapportionedHomeOffice.cs" />
+    <Compile Include="../native-common/SignedInventory.cs" Link="SignedInventory.cs" />
+    <Compile Include="../native-common/PartnershipAllocation.cs" Link="PartnershipAllocation.cs" />
+    <Content Include="offline-engines/*" Link="engines/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

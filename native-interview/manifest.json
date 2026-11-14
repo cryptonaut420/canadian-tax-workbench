@@ -1,0 +1,72 @@
+[
+  {
+    "year": 2019,
+    "sourceSha256": "90b378ee20c0c05d02155dace96f020e4380b36a4344b74cb393ef5c20b0b595",
+    "evidenceId": "ev_841b04e97289c7fb79dbabf557a2e712338dfcb6fedfdec5723b938c4c61f5fa",
+    "xmlSha256": "1fab561130161816dc5e55b094ea627c9a001fb98e6826e0683390adb3dc8741",
+    "sections": 67,
+    "topics": 2433,
+    "fields": 4277,
+    "bundleSha256": "75a7fa0d5fdea2820b3a634cb1bf7988682e44fd7c4e0bca926989aeea637c22"
+  },
+  {
+    "year": 2020,
+    "sourceSha256": "10ce3b8875b1ff4d210aa812e8c229ae3ba57896d7e3e1afdd4577f7fe0da493",
+    "evidenceId": "ev_b1a4dd9c8bf8370f5c2323e9f0dea63d847460a488dd6864c5b997f1c5c2d18a",
+    "xmlSha256": "7715155e7c00376f09bb4a9c186c8d75024062b7e100c02ee9411ea3c6ecf738",
+    "sections": 69,
+    "topics": 2514,
+    "fields": 4417,
+    "bundleSha256": "5c30fae5a5a7744da9eccefdafe15e8f8eb31808070bdb27d5c06d83142f6f3d"
+  },
+  {
+    "year": 2021,
+    "sourceSha256": "e2ff4d56f5e7f7e1139f8afe8cfc164f3e3ece2664d07e963206699d7fd43e77",
+    "evidenceId": "ev_4e6d7ea40104409db47d32922f19a9d19655b6237778c790788d6678872e9eb1",
+    "xmlSha256": "283ba75db7ec9b3a40db33bd47d0df872ec0c4650f5747705f8ebe37d2cc5ddd",
+    "sections": 69,
+    "topics": 2691,
+    "fields": 4588,
+    "bundleSha256": "281d703f236a4de75303f0346c05dd56d153b97617a9c90abbd107ede79d1713"
+  },
+  {
+    "year": 2022,
+    "sourceSha256": "0a6d9fa1c4763068497e63e3f81f8d3d172f2b8f14c0b04de1d402f6c7912fa9",
+    "evidenceId": "ev_e163a84e8ec29581aef5d4abb96a42cac40faa77183e1e755f28c9dfe723b743",
+    "xmlSha256": "cb23d9d8d1751ff4d3331a27de5c44eca2162a90bb75d5a278b8bb0979657362",
+    "sections": 69,
+    "topics": 2853,
+    "fields": 4850,
+    "bundleSha256": "cf20138e0329eba3e68c042911cdac59c6e58fc95c2bbcbb70935f6b59c7bda4"
+  },
+  {
+    "year": 2023,
+    "sourceSha256": "09ef4bb7727dd6c8e1b3a66ffb9b1106d9922d092e0bb5addcef6dd56443493b",
+    "evidenceId": "ev_dca6efb843873d24c12eb9260658b1386e233ce0aad0cc28e224df7b256052a0",
+    "xmlSha256": "b67c49a1a5a35821c0145ff9eb68c60e559cb59088631e7541bd8cf95a3f5359",
+    "sections": 73,
+    "topics": 2845,
+    "fields": 4874,
+    "bundleSha256": "e4690cd1bc6db6544823026c31ea9a47036898637e4e6741ea8dea5fec73e682"
+  },
+  {
+    "year": 2024,
+    "sourceSha256": "df2c9d6bdd2bf8c7dce9e239c730584f318071af00e585febf76c0afb975b3b9",
+    "evidenceId": "ev_4be40301176767e78f9dc270a03af80251cb6706c5e72f70c04c1ed1d377c0ac",
+    "xmlSha256": "982f87823440fe70df62787d637ba896e4359bac78a80d473ea3ba905479711f",
+    "sections": 73,
+    "topics": 2938,
+    "fields": 5069,
+    "bundleSha256": "7d52198ea5e95594473777c7e412ff00eaeb556d53b6a64c967aa2b437339a69"
+  },
+  {
+    "year": 2025,
+    "sourceSha256": "7466cb7d4db883954ba55ce7592e95e91c2fe322676ba1d94805f882fcdd68ee",
+    "evidenceId": "ev_99dce718a9a14e001b020ced9c5d6853b6dfab189246388172200dd6a14402e8",
+    "xmlSha256": "9c57bea9bae687bcd4e54c5fc559b4236d80e71c018c40b2d85d8b6b2381d99b",
+    "sections": 70,
+    "topics": 2937,
+    "fields": 5154,
+    "bundleSha256": "dcdf31214a9d3c663d6833b9ec1e638718857c17b50d69c124217f4bd9906a99"
+  }
+]

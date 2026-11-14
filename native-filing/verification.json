@@ -1,0 +1,174 @@
+{
+  "networkRequests": 0,
+  "software": "Original yearly native serializer with audited offline IP helper",
+  "originalCalculationPasses": 3,
+  "independentVerificationPasses": 1,
+  "completeReturnParityVerified": false,
+  "liveServiceVerified": false,
+  "results": [
+    {
+      "year": 2019,
+      "mode": "netfile",
+      "generated": true,
+      "schemaValidated": true,
+      "calculationPasses": 3,
+      "verificationPasses": 1,
+      "stable": true,
+      "eligibilityErrors": [
+        "You are claiming a CPP overpayment at line 44800 of your tax return, but any CPP overpayment claimed on your tax return for 2019 must be filed before the end of 2023. You must file a paper tax return instead.\r\n\r\nYou are claiming an EI overpayment at line 45000 of your tax return, but any EI overpayment claimed on your tax return for 2019 must be filed before the end of 2022. You must file a paper tax return instead.\r\n\r\n"
+      ],
+      "offlineOnly": true
+    },
+    {
+      "year": 2019,
+      "mode": "refile",
+      "generated": true,
+      "schemaValidated": true,
+      "calculationPasses": 3,
+      "verificationPasses": 1,
+      "stable": true,
+      "eligibilityErrors": [
+        "ReFILE is no longer available for the 2019 taxation year. To change your 2019 tax return, please send a paper T1 Adjustment form to the Canada Revenue Agency, and attach all pertinent slips and receipts.\r\n\r\n"
+      ],
+      "offlineOnly": true
+    },
+    {
+      "year": 2020,
+      "mode": "netfile",
+      "generated": true,
+      "schemaValidated": true,
+      "calculationPasses": 3,
+      "verificationPasses": 1,
+      "stable": true,
+      "eligibilityErrors": [
+        "You are claiming a CPP overpayment at line 44800 of your tax return, but any CPP overpayment claimed on your tax return for 2020 must be filed before the end of 2024. You must file a paper tax return instead.\r\n\r\nYou are claiming an EI overpayment at line 45000 of your tax return, but any EI overpayment claimed on your tax return for 2020 must be filed before the end of 2023. You must file a paper tax return instead.\r\n\r\n"
+      ],
+      "offlineOnly": true
+    },
+    {
+      "year": 2020,
+      "mode": "refile",
+      "generated": true,
+      "schemaValidated": true,
+      "calculationPasses": 3,
+      "verificationPasses": 1,
+      "stable": true,
+      "eligibilityErrors": [
+        "ReFILE is no longer available for the 2020 taxation year. To change your 2020 tax return, please send a paper T1 Adjustment form to the Canada Revenue Agency, and attach all pertinent slips and receipts.\r\n\r\n"
+      ],
+      "offlineOnly": true
+    },
+    {
+      "year": 2021,
+      "mode": "netfile",
+      "generated": true,
+      "schemaValidated": true,
+      "calculationPasses": 3,
+      "verificationPasses": 1,
+      "stable": true,
+      "eligibilityErrors": [],
+      "offlineOnly": true
+    },
+    {
+      "year": 2021,
+      "mode": "refile",
+      "generated": true,
+      "schemaValidated": true,
+      "calculationPasses": 3,
+      "verificationPasses": 1,
+      "stable": true,
+      "eligibilityErrors": [
+        "ReFILE is no longer available for the 2021 taxation year. To change your 2021 tax return, please send a paper T1 Adjustment form to the Canada Revenue Agency, and attach all pertinent slips and receipts.\r\n\r\n"
+      ],
+      "offlineOnly": true
+    },
+    {
+      "year": 2022,
+      "mode": "netfile",
+      "generated": true,
+      "schemaValidated": true,
+      "calculationPasses": 3,
+      "verificationPasses": 1,
+      "stable": true,
+      "eligibilityErrors": [],
+      "offlineOnly": true
+    },
+    {
+      "year": 2022,
+      "mode": "refile",
+      "generated": true,
+      "schemaValidated": true,
+      "calculationPasses": 3,
+      "verificationPasses": 1,
+      "stable": true,
+      "eligibilityErrors": [],
+      "offlineOnly": true
+    },
+    {
+      "year": 2023,
+      "mode": "netfile",
+      "generated": true,
+      "schemaValidated": true,
+      "calculationPasses": 3,
+      "verificationPasses": 1,
+      "stable": true,
+      "eligibilityErrors": [],
+      "offlineOnly": true
+    },
+    {
+      "year": 2023,
+      "mode": "refile",
+      "generated": true,
+      "schemaValidated": true,
+      "calculationPasses": 3,
+      "verificationPasses": 1,
+      "stable": true,
+      "eligibilityErrors": [],
+      "offlineOnly": true
+    },
+    {
+      "year": 2024,
+      "mode": "netfile",
+      "generated": true,
+      "schemaValidated": true,
+      "calculationPasses": 3,
+      "verificationPasses": 1,
+      "stable": true,
+      "eligibilityErrors": [],
+      "offlineOnly": true
+    },
+    {
+      "year": 2024,
+      "mode": "refile",
+      "generated": true,
+      "schemaValidated": true,
+      "calculationPasses": 3,
+      "verificationPasses": 1,
+      "stable": true,
+      "eligibilityErrors": [],
+      "offlineOnly": true
+    },
+    {
+      "year": 2025,
+      "mode": "netfile",
+      "generated": true,
+      "schemaValidated": true,
+      "calculationPasses": 3,
+      "verificationPasses": 1,
+      "stable": true,
+      "eligibilityErrors": [],
+      "offlineOnly": true
+    },
+    {
+      "year": 2025,
+      "mode": "refile",
+      "generated": true,
+      "schemaValidated": true,
+      "calculationPasses": 3,
+      "verificationPasses": 1,
+      "stable": true,
+      "eligibilityErrors": [],
+      "offlineOnly": true
+    }
+  ]
+}

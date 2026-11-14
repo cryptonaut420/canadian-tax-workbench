@@ -1,0 +1,38 @@
+# Private workspaces, credentials, backups and user exports
+.data/
+.runtime/
+.env
+.env.*
+!.env.example
+*.db
+*.db-*
+*.sqlite
+*.sqlite-*
+*.gt1
+*.pdf
+*.log
+*.zip
+*.bak
+# Runtime/build/cache output
+node_modules/
+**/bin/
+**/obj/
+**/__pycache__/
+*.pyc
+dist/
+# Local investigation notes, decoded CIL and session reports (not app inputs)
+/research/*
+!/research/input-mappings.json
+!/research/foreign-tax-mappings.json
+!/research/business-mappings.json
+!/research/2019/
+!/research/2020/
+!/research/2021/
+!/research/2022/
+!/research/2023/
+!/research/2024/
+!/research/2025/
+/research/20*/*
+!/research/20*/field-codes.json
+!/research/20*/line-field-map.json
+/verification.json

@@ -1,0 +1,24 @@
+{
+  "name": "canadian-tax-workbench",
+  "version": "0.9.0",
+  "private": true,
+  "description": "Free local-first Canadian tax workbench with native Linux calculations and an AI-friendly REST API",
+  "type": "module",
+  "main": "desktop/main.cjs",
+  "engines": {
+    "node": ">=24.15.0"
+  },
+  "scripts": {
+    "start": "node scripts/start-desktop.mjs",
+    "dev": "node server/index.mjs",
+    "test": "node --test --test-concurrency=1 tests/*.test.mjs",
+    "build:engine": "dotnet build native-engine/NativeTax.csproj --nologo",
+    "doctor": "dotnet run --project native-engine/NativeTax.csproj -- doctor"
+  },
+  "productName": "Tax Workbench Canada",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cryptonaut420/canadian-tax-workbench.git"
+  }
+}

@@ -1,0 +1,72 @@
+[
+  {
+    "year": 2019,
+    "sourceSha256": "af385518e9a97fb0e9adf1c5446b18d9d88b2acf81aa28f0718c289a6ba49abb",
+    "evidenceId": "ev_d3e12260b759f82df33cbcd792ba0c27235738845fb01bc72545814970df1e72",
+    "layoutSha256": "b5db92d2a2c31f401c462abed11119e829c501fd52496009b529dc10936f507d",
+    "forms": 240,
+    "images": 430,
+    "pages": 463,
+    "bundleSha256": "a2f54e4198db14247ecaf7d238f438f37f87e7be5ef596c93d8d8f242e9cbcdb"
+  },
+  {
+    "year": 2020,
+    "sourceSha256": "24285599115b13722d9cc8555d341a97b563769bd79e67a91860b4a7cfb81a8d",
+    "evidenceId": "ev_4a673332f547d6a56b573f55ca85522d4d1073e6491eb5c0d4894041a653c6ea",
+    "layoutSha256": "3128b86c0c13fb0d8fde94c6354ed59d057ba2e8fe50ec3438212e7b3eaabe3c",
+    "forms": 310,
+    "images": 503,
+    "pages": 579,
+    "bundleSha256": "b5f68b830a0aafb732e4330b4eae8f7a3c66a787561bf105c6c69ae73e43a953"
+  },
+  {
+    "year": 2021,
+    "sourceSha256": "fa2dd3e2d400ef24abd2d484a9f85fee0414c1cfad9726864418082f37a5607b",
+    "evidenceId": "ev_3d985964020420971eda9a2f974b4dab78c6621585cf97007bd7659dd6b7248c",
+    "layoutSha256": "96138e98abab6152e03ab756b8677a89cc48b91e158c548b9c5d5cbf72d0ed75",
+    "forms": 310,
+    "images": 520,
+    "pages": 597,
+    "bundleSha256": "e587b997b634d7c78adf0a94f29dcbfd7c4784b3e26b2e60f6d083acd4eb09de"
+  },
+  {
+    "year": 2022,
+    "sourceSha256": "53cb643c8f238db10cac5c91bb8c40c9f377ffda720d643284340f5e376ae47a",
+    "evidenceId": "ev_195063f1a3228133dbc790be4dfe03d3f2c4b884677da9431afcf5725c741d65",
+    "layoutSha256": "cb4d6da8d117d0c81a274b220e86ce79f84c8fd543dda6f889e82de989f5294a",
+    "forms": 327,
+    "images": 556,
+    "pages": 628,
+    "bundleSha256": "1cf6db9b15394fc40c48f24caf2d4ed81063cea484a5ddc144c09a90afadc6e4"
+  },
+  {
+    "year": 2023,
+    "sourceSha256": "765e6fc324b0fc98dc90dd12ca9ce8d0db3556a974ca6c96d36a11ef9aeb105e",
+    "evidenceId": "ev_8c70b2931b8f19d57473aa16923a1056a1fa3f31158e27e3536017efb006e367",
+    "layoutSha256": "03d12373e51f4ac37a822c38d55dec230ea9f568d5aaaf40a3be8a1fcbe14a5a",
+    "forms": 328,
+    "images": 568,
+    "pages": 639,
+    "bundleSha256": "948e252e9137407e299b083fd7579bd3009d126765477622e1404821d7662a76"
+  },
+  {
+    "year": 2024,
+    "sourceSha256": "999a390e98447d392cc39988fb520b98f550358b1f9c29ee208982c4b3c37ae6",
+    "evidenceId": "ev_9039941a1d11aefef2a29420ecf932f707fd13c06b52fb409144fdfe07cf3ffb",
+    "layoutSha256": "19e2f82d208ed9de7af3a944bef85985f5b38d20622d0deeac56f42cc624244a",
+    "forms": 342,
+    "images": 612,
+    "pages": 689,
+    "bundleSha256": "0c97dd3000ee51595f340492ab49ffcf727c127f2d9100e21c224a6c1d68a633"
+  },
+  {
+    "year": 2025,
+    "sourceSha256": "cf90a1c6007a880852d200029f7e4655f77789f493434d38f6a6e5ae467acebd",
+    "evidenceId": "ev_aef1764d1238b9357f54fa68abc147793e4b46c59ce4a77ed1cae1c5916b30a7",
+    "layoutSha256": "5e33fbe9e9159210258b7b6334120f145cbfd7328e19225cb92a090c119b4233",
+    "forms": 326,
+    "images": 591,
+    "pages": 656,
+    "bundleSha256": "017ae638a83738f942f8cd0d4dfe598822d79704d0a2f93c585399ea5a6c74e0"
+  }
+]
